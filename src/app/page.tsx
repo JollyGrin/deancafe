@@ -5,6 +5,7 @@ export default function Home() {
         <h1>dean.cafe </h1>
         <p>ux, frontend, 3d</p>
         <p>from amsterdam</p>
+        <p>coming soon</p>
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
         {/* FDOOTER */}
