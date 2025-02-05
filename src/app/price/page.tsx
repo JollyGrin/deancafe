@@ -50,7 +50,7 @@ export default function Price() {
                 <li className="flex items-start">
                   <span className="text-green-500 mr-2">✓</span>
                   <span>
-                    Like a digital business card that's always available
+                    Like a digital business card that is always available
                   </span>
                 </li>
                 <li className="flex items-start">
@@ -109,7 +109,7 @@ export default function Price() {
             Ready to start?
           </h2>
           <p className="text-gray-600 mb-6">
-            Let's discuss your project in a quick call
+            Let&apos;s discuss your project in a quick call
           </p>
           <button
             onClick={() => window.open("#", "_blank")} // Calendly link will go here
