@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import {
+  Undo,
   FileText,
   X,
   Euro,
@@ -113,7 +114,7 @@ export default function Home() {
         localStorage.setItem("isread", "true");
         clearInterval(interval);
       }
-    }, 200);
+    }, 1200);
 
     return () => clearInterval(interval);
   }, [currentIndex]);
@@ -217,8 +218,18 @@ export default function Home() {
             {messages.map((message, index) => (
               <div
                 key={index}
-                className={`flex ${message.type === "client" ? "justify-end" : "justify-start"}`}
+                className={`flex relative ${message.type === "client" ? "justify-end" : "justify-start"}`}
               >
+                <button
+                  className={`absolute right-4 top-[30%] bg-gray-200 rounded-full p-2 hover:bg-gray-300 ${conversation.length - 1 === index ? "block" : "hidden"}`}
+                  onClick={() => {
+                    localStorage.removeItem("isread");
+                    setMessages(...[[conversation[0]]]);
+                    setCurrentIndex(1);
+                  }}
+                >
+                  <Undo />
+                </button>
                 <div className={`space-y-2 max-w-[80%] animate-fade-in`}>
                   <div
                     className={`px-4 py-2 rounded-2xl ${
