@@ -27,7 +27,7 @@
 		</div>
 		<div class="flex items-center justify-between px-4 py-2">
 			<p class="text-2xl">dean.cafe</p>
-			<div class="mr-10 flex gap-2">
+			<div class="flex gap-2 md:mr-10">
 				<p>web</p>
 				<p>■</p>
 				<p>design</p>
@@ -46,7 +46,7 @@
 			{@render fadeLeft()}
 			<!-- {@render fadeBottom()} -->
 		</div>
-		<div class="grid place-content-center text-white">
+		<div class="hidden place-content-center text-white md:grid">
 			<p class="font-display mb-2 text-xl">Transform your digital footprint.</p>
 			<!-- <button -->
 			<!-- 	class="w-fit rounded-full border-[1px] border-gray-800/50 bg-gradient-to-t from-gray-900 to-gray-700/50 px-2 font-sans text-sm" -->
