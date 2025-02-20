@@ -1,1 +1,7 @@
 @import 'tailwindcss';
+
+@theme {
+	--font-display: 'Ovo', 'serif';
+	--font-sans: 'Radio Canada Big', 'sans-serif';
+	--color-brand-back: #060e10;
+}
