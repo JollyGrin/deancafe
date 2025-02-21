@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { T } from '@threlte/core';
-	import { OrbitControls, useGltf, useTexture } from '@threlte/extras';
+	import { OrbitControls, useGltf, useTexture, interactivity } from '@threlte/extras';
 	import * as THREE from 'three';
 	import { DecalGeometry } from 'three/examples/jsm/geometries/DecalGeometry.js';
+
+	// add interactivity
+	interactivity();
 
 	// Load the bunny model using useGltf
 	const gltfPromise = useGltf(
@@ -89,8 +92,18 @@
 								new THREE.Vector3(...stickerConfigs[i].scale)
 							)}
 							interactive
-							on:pointerenter={() => (hoveredSticker = key)}
-							on:pointerleave={() => (hoveredSticker = null)}
+							onclick={(e) => console.log('click')}
+							oncontextmenu={(e) => console.log('context menu')}
+							ondblclick={(e) => console.log('double click')}
+							onwheel={(e) => console.log('wheel')}
+							onpointerup={(e) => console.log('up')}
+							onpointerdown={(e) => console.log('down', e)}
+							onpointerover={(e) => console.log('over')}
+							onpointerout={(e) => console.log('out')}
+							onpointerenter={(e) => console.log('enter')}
+							onpointerleave={(e) => console.log('leave')}
+							onpointermove={(e) => console.log('move')}
+							onpointermissed={() => console.log('missed')}
 						>
 							<T.MeshPhysicalMaterial
 								map={texture}
