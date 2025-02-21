@@ -12,6 +12,7 @@
 	import { DEG2RAD } from 'three/src/math/MathUtils.js';
 	import { DecalMaterial } from '$lib/shaders/decalMaterial';
 	import { bvhRaycasting } from '$lib/raycasting/bvhRaycasting.svelte';
+	import { onMount } from 'svelte';
 
 	type Event = THREE.Intersection & {
 		intersections: THREE.Intersection[]; // The first intersection of each intersected object
@@ -26,6 +27,7 @@
 		stopped: boolean; // Whether the event propagation has been stopped
 	};
 
+	const bunneyPostion: [number, number, number] = [0.25, -1, 0] as const;
 	const { camera } = useThrelte();
 
 	bvhRaycasting();
@@ -40,6 +42,7 @@
 			if (!bunnyMesh) return;
 			const intersects = state.raycaster.intersectObject(bunnyMesh);
 			const [intersection] = intersects;
+			console.log({ intersection });
 			intersectionPoint = intersection?.point ?? null;
 
 			state.pointer.update((p) => {
@@ -73,30 +76,77 @@
 	// Hover state using $state
 	let hoveredSticker: string | null = $state(null);
 	let isDragging: boolean = $state(false);
+	let draggedSticker: string | null = $state(null);
 
 	// Sticker positions and configurations
-	const stickerConfigs = [
+	const stickerConfigs = $state([
 		{
 			id: 'sticker_nasa',
 			position: [-0.1, 1.3, 0.55],
 			rotation: [-0.5, 0, 0],
 			scale: [0.45, 0.45, 1]
 		},
-		{ id: 'sticker_smile', position: [0.4, 1, 0.55], rotation: [0, 0, 0], scale: [0.3, 0.3, 1] },
+		{ id: 'sticker_smile', position: [0.6, 1, 0.55], rotation: [7, 0, 0], scale: [0.3, 0.3, 1] },
 		{ id: 'sticker_heart', position: [0, 0.7, 0.85], rotation: [0, 0, 0], scale: [0.35, 0.35, 1] },
 		{ id: 'sticker_four', position: [-0.5, 1, 0.7], rotation: [0, 1, 0], scale: [0.3, 0.3, 1] }
-	];
+	]);
+
+	// Update sticker position when dragging
+	$effect(() => {
+		if (isDragging && hoveredSticker && intersectionPoint) {
+			const sticker = stickerConfigs.find((s) => s.id === hoveredSticker);
+			if (sticker) {
+				console.log('HIT');
+				const [x, y, z] = bunneyPostion;
+				console.log({ x, y, z });
+				sticker.position = [intersectionPoint.x, intersectionPoint.y, intersectionPoint.z];
+			}
+		}
+	});
 
 	let bunnyMesh: THREE.Mesh | undefined = $state();
 
+	// Keyboard state
+	let isSpacePressed = $state(false);
+
+	// Handle keyboard events
+	function handleKeyDown(event: KeyboardEvent) {
+		if (event.code === 'Space') {
+			event.preventDefault(); // Prevent page scroll
+			isSpacePressed = true;
+			isDragging = true;
+		}
+	}
+
+	function handleKeyUp(event: KeyboardEvent) {
+		if (event.code === 'Space') {
+			isSpacePressed = false;
+			isDragging = false;
+		}
+	}
+
+	// Add and remove event listeners
+	onMount(() => {
+		window.addEventListener('keydown', handleKeyDown);
+		window.addEventListener('keyup', handleKeyUp);
+
+		return () => {
+			window.removeEventListener('keydown', handleKeyDown);
+			window.removeEventListener('keyup', handleKeyUp);
+		};
+	});
+
 	$inspect(isDragging);
+	$inspect(isSpacePressed);
 </script>
 
+<svelte:window on:keydown|preventDefault={handleKeyDown} on:keyup|preventDefault={handleKeyUp} />
+
 {#await Promise.all([gltfPromise, texturesPromise]) then [gltf, textures]}
-	<T.PerspectiveCamera position={[2, 2, 10]} fov={20} makeDefault>
+	<T.PerspectiveCamera position={[2, 2, 10]} fov={20} makeDefault {camera}>
 		<OrbitControls
 			maxPolarAngle={DEG2RAD * 90}
-			enableRotate={true}
+			enableRotate={!isDragging}
 			enableDamping
 			enablePan={false}
 		/>
@@ -130,7 +180,7 @@
 			</T.Mesh>
 		{/if}
 
-		<T.Group position={[0.25, -1, 0]}>
+		<T.Group position={[0, 0, 0]}>
 			<!-- Bunny mesh -->
 			<T.Mesh bind:ref={bunnyMesh} castShadow receiveShadow geometry={gltf.nodes.bunny.geometry}>
 				<T.MeshStandardMaterial
@@ -153,15 +203,14 @@
 							)}
 							interactive
 							onpointerover={() => (hoveredSticker = sticker.id)}
-							onpointerout={() => (hoveredSticker = null)}
-							onpointerdown={() => {
-								isDragging = true;
-							}}
-							onpointerup={() => {
-								isDragging = false;
+							onpointerout={() => {
+								hoveredSticker = null;
+								if (!isDragging) draggedSticker = null;
 							}}
 							onmove={(e: Event) => {
-								// TODO: add the dragging state?
+								if (isDragging && hoveredSticker === sticker.id && intersectionPoint) {
+									// Position is updated via the effect
+								}
 							}}
 						>
 							{#if sticker.id === hoveredSticker}
