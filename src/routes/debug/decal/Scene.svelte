@@ -120,13 +120,34 @@
 							)}
 							interactive
 						>
-							<T
-								is={DecalMaterial}
-								map={texture}
-								outlineColor="gold"
-								outlineWidth={10}
-								alphaThreshold={0.5}
-							/>
+							{#if false}
+								<T
+									is={DecalMaterial}
+									map={texture}
+									outlineColor="gold"
+									outlineWidth={10}
+									alphaThreshold={0.5}
+								/>
+							{:else}
+								<T.MeshPhysicalMaterial
+									map={texture}
+									transparent
+									depthTest={true}
+									depthWrite={false}
+									polygonOffset={true}
+									polygonOffsetFactor={-4}
+									wireframe={debug}
+									iridescence={1}
+									iridescenceIOR={2.2}
+									iridescenceThicknessRange={[100, 400]}
+									roughness={0.2}
+									metalness={0.8}
+									clearcoat={1}
+									clearcoatRoughness={0.1}
+									toneMapped={false}
+									envMapIntensity={2}
+								/>
+							{/if}
 						</T.Mesh>
 					{/if}
 				{/each}
