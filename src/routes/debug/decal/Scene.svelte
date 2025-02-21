@@ -27,7 +27,6 @@
 		stopped: boolean; // Whether the event propagation has been stopped
 	};
 
-	const bunneyPostion: [number, number, number] = [0.25, -1, 0] as const;
 	const { camera } = useThrelte();
 
 	bvhRaycasting();
@@ -95,7 +94,6 @@
 		if (isDragging && hoveredSticker && intersectionPoint) {
 			const sticker = stickerConfigs.find((s) => s.id === hoveredSticker);
 			if (sticker) {
-				const [x, y, z] = bunneyPostion;
 				sticker.position = [intersectionPoint.x, intersectionPoint.y, intersectionPoint.z];
 			}
 		}
