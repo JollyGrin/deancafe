@@ -11,6 +11,7 @@
 	import * as THREE from 'three';
 	import { DecalGeometry } from 'three/examples/jsm/geometries/DecalGeometry.js';
 	import { DEG2RAD } from 'three/src/math/MathUtils.js';
+	import { DecalMaterial } from '$lib/shaders/decalMaterial';
 
 	type Event = THREE.Intersection & {
 		intersections: THREE.Intersection[]; // The first intersection of each intersected object
@@ -124,59 +125,14 @@
 								new THREE.Vector3(...stickerConfigs[i].scale)
 							)}
 							interactive
-							<!--
-							onclick={() => console.log('click', stickerConfigs[i].id)}
-							--
 						>
-							<!-- oncontextmenu={() => console.log('context menu', stickerConfigs[i].id)} -->
-							<!-- ondblclick={() => console.log('double click', stickerConfigs[i].id)} -->
-							<!-- onwheel={() => console.log('wheel', stickerConfigs[i].id)} -->
-							<!-- onpointerup={(e: Event) => { -->
-							<!-- 	e.stopPropagation(); -->
-							<!-- 	console.log('up', stickerConfigs[i].id); -->
-							<!-- 	isDragging = false; -->
-							<!-- }} -->
-							<!-- onpointerdown={(e: Event) => { -->
-							<!-- 	e.stopPropagation(); -->
-							<!-- 	console.log('down', stickerConfigs[i].id); -->
-							<!-- 	isDragging = true; -->
-							<!-- }} -->
-							<!-- onpointerover={() => console.log('over', stickerConfigs[i].id)} -->
-							<!-- onpointerout={() => console.log('out', stickerConfigs[i].id)} -->
-							<!-- onpointerenter={() => { -->
-							<!-- 	console.log('enter', stickerConfigs[i].id); -->
-							<!-- 	hoveredSticker = stickerConfigs[i].id; -->
-							<!-- }} -->
-							<!-- onpointerleave={() => { -->
-							<!-- 	console.log('leave', stickerConfigs[i].id); -->
-							<!-- 	hoveredSticker = null; -->
-							<!-- }} -->
-							<!-- onpointermove={(e: Event) => { -->
-							<!-- 	console.log('move', stickerConfigs[i].id); -->
-							<!-- 	e.stopPropagation(); -->
-							<!-- }} -->
-							<!-- onpointermissed={() => console.log('missed', stickerConfigs[i].id)} -->
-							>
-							<T.MeshPhysicalMaterial
+							<T
+								is={DecalMaterial}
 								map={texture}
-								transparent
-								depthTest={true}
-								depthWrite={false}
-								polygonOffset={true}
-								polygonOffsetFactor={-4}
-								wireframe={debug}
-								iridescence={1}
-								iridescenceIOR={2.2}
-								iridescenceThicknessRange={[100, 400]}
-								roughness={0.2}
-								metalness={0.8}
-								clearcoat={1}
-								clearcoatRoughness={0.1}
-								toneMapped={false}
-								envMapIntensity={2}
+								outlineColor="red"
+								outlineWidth={0.1}
+								alphaThreshold={0.1}
 							/>
-							<Edges thresholdAngle={Math.PI / 4} color="white" />
-							<Outlines color="red" />
 						</T.Mesh>
 					{/if}
 				{/each}
