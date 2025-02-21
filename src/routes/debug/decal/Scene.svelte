@@ -126,7 +126,8 @@
 
 		{#if !!intersectionPoint}
 			<T.Mesh position={[intersectionPoint.x, intersectionPoint.y, intersectionPoint.z]}>
-				<T.SphereGeometry args={[0.2, 0.2, 0.2]} />
+				<T.SphereGeometry args={[0.02, 32, 16]} />
+				<T.MeshBasicMaterial color="#ff0000" depthTest={false} />
 			</T.Mesh>
 		{/if}
 
