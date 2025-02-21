@@ -1,8 +1,16 @@
 <script lang="ts">
 	import { T } from '@threlte/core';
-	import { OrbitControls, useGltf, useTexture, interactivity } from '@threlte/extras';
+	import {
+		OrbitControls,
+		useGltf,
+		useTexture,
+		interactivity,
+		Edges,
+		Outlines
+	} from '@threlte/extras';
 	import * as THREE from 'three';
 	import { DecalGeometry } from 'three/examples/jsm/geometries/DecalGeometry.js';
+	import { DEG2RAD } from 'three/src/math/MathUtils.js';
 
 	type Event = THREE.Intersection & {
 		intersections: THREE.Intersection[]; // The first intersection of each intersected object
@@ -44,10 +52,15 @@
 
 	// Sticker positions and configurations
 	const stickerConfigs = [
-		{ position: [-0.1, 1.3, 0.55], rotation: [-0.5, 0, 0], scale: [0.45, 0.45, 1] },
-		{ position: [0.4, 1, 0.55], rotation: [0, 0, 0], scale: [0.3, 0.3, 1] },
-		{ position: [0, 0.7, 0.85], rotation: [0, 0, 0], scale: [0.35, 0.35, 1] },
-		{ position: [-0.5, 1, 0.7], rotation: [0, 1, 0], scale: [0.3, 0.3, 1] }
+		{
+			id: 'sticker_nasa',
+			position: [-0.1, 1.3, 0.55],
+			rotation: [-0.5, 0, 0],
+			scale: [0.45, 0.45, 1]
+		},
+		{ id: 'sticker_smile', position: [0.4, 1, 0.55], rotation: [0, 0, 0], scale: [0.3, 0.3, 1] },
+		{ id: 'sticker_heart', position: [0, 0.7, 0.85], rotation: [0, 0, 0], scale: [0.35, 0.35, 1] },
+		{ id: 'sticker_four', position: [-0.5, 1, 0.7], rotation: [0, 1, 0], scale: [0.3, 0.3, 1] }
 	];
 
 	let bunnyMesh: THREE.Mesh | undefined = $state();
@@ -62,9 +75,10 @@
 {#await Promise.all([gltfPromise, texturesPromise]) then [gltf, textures]}
 	<T.PerspectiveCamera position={[2, 2, 10]} fov={20} makeDefault>
 		<OrbitControls
-			minPolarAngle={Math.PI / 2}
-			maxPolarAngle={Math.PI / 2}
-			enableRotate={!isDragging}
+			maxPolarAngle={DEG2RAD * 90}
+			enableRotate={true}
+			enableDamping
+			enablePan={false}
 		/>
 	</T.PerspectiveCamera>
 
@@ -93,7 +107,7 @@
 			<!-- Bunny mesh -->
 			<T.Mesh bind:ref={bunnyMesh} castShadow receiveShadow geometry={gltf.nodes.bunny.geometry}>
 				<T.MeshStandardMaterial
-					color="black"
+					color="white"
 					roughness={0.6}
 					metalness={0.1}
 					envMapIntensity={1.2}
@@ -110,30 +124,39 @@
 								new THREE.Vector3(...stickerConfigs[i].scale)
 							)}
 							interactive
-							onclick={(e) => console.log('click')}
-							oncontextmenu={(e) => console.log('context menu')}
-							ondblclick={(e) => console.log('double click')}
-							onwheel={(e) => console.log('wheel')}
-							onpointerup={(e: Event) => {
-								e.stopPropagation();
-								console.log('down', e);
-								isDragging = false;
-							}}
-							onpointerdown={(e: Event) => {
-								e.stopPropagation();
-								console.log('down', e);
-								isDragging = true;
-							}}
-							onpointerover={(e) => console.log('over')}
-							onpointerout={(e) => console.log('out')}
-							onpointerenter={(e) => console.log('enter')}
-							onpointerleave={(e) => console.log('leave')}
-							onpointermove={(e: Event) => {
-								console.log('down', e);
-								e.stopPropagation();
-							}}
-							onpointermissed={() => console.log('missed')}
+							<!--
+							onclick={() => console.log('click', stickerConfigs[i].id)}
+							--
 						>
+							<!-- oncontextmenu={() => console.log('context menu', stickerConfigs[i].id)} -->
+							<!-- ondblclick={() => console.log('double click', stickerConfigs[i].id)} -->
+							<!-- onwheel={() => console.log('wheel', stickerConfigs[i].id)} -->
+							<!-- onpointerup={(e: Event) => { -->
+							<!-- 	e.stopPropagation(); -->
+							<!-- 	console.log('up', stickerConfigs[i].id); -->
+							<!-- 	isDragging = false; -->
+							<!-- }} -->
+							<!-- onpointerdown={(e: Event) => { -->
+							<!-- 	e.stopPropagation(); -->
+							<!-- 	console.log('down', stickerConfigs[i].id); -->
+							<!-- 	isDragging = true; -->
+							<!-- }} -->
+							<!-- onpointerover={() => console.log('over', stickerConfigs[i].id)} -->
+							<!-- onpointerout={() => console.log('out', stickerConfigs[i].id)} -->
+							<!-- onpointerenter={() => { -->
+							<!-- 	console.log('enter', stickerConfigs[i].id); -->
+							<!-- 	hoveredSticker = stickerConfigs[i].id; -->
+							<!-- }} -->
+							<!-- onpointerleave={() => { -->
+							<!-- 	console.log('leave', stickerConfigs[i].id); -->
+							<!-- 	hoveredSticker = null; -->
+							<!-- }} -->
+							<!-- onpointermove={(e: Event) => { -->
+							<!-- 	console.log('move', stickerConfigs[i].id); -->
+							<!-- 	e.stopPropagation(); -->
+							<!-- }} -->
+							<!-- onpointermissed={() => console.log('missed', stickerConfigs[i].id)} -->
+							>
 							<T.MeshPhysicalMaterial
 								map={texture}
 								transparent
@@ -152,6 +175,8 @@
 								toneMapped={false}
 								envMapIntensity={2}
 							/>
+							<Edges thresholdAngle={Math.PI / 4} color="white" />
+							<Outlines color="red" />
 						</T.Mesh>
 					{/if}
 				{/each}
