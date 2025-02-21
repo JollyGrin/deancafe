@@ -39,8 +39,18 @@
 	</T.PerspectiveCamera>
 
 	<T.Scene>
-		<T.AmbientLight intensity={1} />
-		<T.SpotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+		<T.AmbientLight intensity={0.2} />
+		<T.SpotLight 
+			position={[4, 8, 4]} 
+			intensity={1.5}
+			angle={0.4}
+			penumbra={0.8}
+			decay={1.5}
+			distance={20}
+			castShadow
+		/>
+		<T.DirectionalLight position={[-4, 2, -4]} intensity={0.3} color="#b6ceff" />
+		<T.DirectionalLight position={[0, -2, -6]} intensity={0.2} color="#ffd0d0" />
 
 		<T.Group position={[0.25, -1, 0]}>
 			<!-- Bunny mesh -->
@@ -50,7 +60,12 @@
 				receiveShadow 
 				geometry={gltf.nodes.bunny.geometry}
 			>
-				<T.MeshStandardMaterial color="black" roughness={0.9} />
+				<T.MeshStandardMaterial 
+					color="black" 
+					roughness={0.6}
+					metalness={0.1}
+					envMapIntensity={1.2}
+				/>
 
 				<!-- Stickers -->
 				{#each Object.entries(textures) as [key, texture], i}
@@ -72,12 +87,14 @@
 								polygonOffsetFactor={-4}
 								wireframe={debug}
 								iridescence={1}
-								iridescenceIOR={1}
-								iridescenceThicknessRange={[0, 1400]}
-								roughness={1}
-								clearcoat={0.5}
-								metalness={0.75}
+								iridescenceIOR={2.2}
+								iridescenceThicknessRange={[100, 400]}
+								roughness={0.2}
+								metalness={0.8}
+								clearcoat={1}
+								clearcoatRoughness={0.1}
 								toneMapped={false}
+								envMapIntensity={2}
 							/>
 						</T.Mesh>
 					{/if}
