@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { Canvas } from '@threlte/core';
+	import Scene from './Scene.svelte';
+	import { AsciiRenderer } from '@threlte/extras';
 </script>
 
 {#snippet fadeLeft()}
@@ -22,12 +25,10 @@
 	<div
 		class="bg-back/10 absolute z-20 flex h-full w-full flex-col justify-between font-[Ovo] text-white"
 	>
-		<div class="px-4 py-2">
-			<!-- <p class="text-2xl">dean.cafe</p> -->
-		</div>
+		<div class="px-4 py-2"></div>
 		<div class="flex items-center justify-between px-4 py-2">
 			<p class="text-2xl">dean.cafe</p>
-			<div class="flex gap-2 md:mr-10">
+			<div class="flex gap-2 md:mx-20">
 				<p>web</p>
 				<p>■</p>
 				<p>design</p>
@@ -38,16 +39,28 @@
 	</div>
 {/snippet}
 
+{#snippet cup()}
+	<Canvas>
+		<Scene />
+	</Canvas>
+{/snippet}
+
 <div class="bg-brand-back h-screen">
-	<div class="mx-auto grid h-full max-w-[1200px] grid-cols-1 md:grid-cols-[3fr_2fr]">
+	<div class="mx-auto grid h-full grid-cols-1 md:grid-cols-[3fr_2fr]">
 		<div id="bg-img" class="relative">
+			<div class="absolute z-10 h-[400px] w-full md:hidden">
+				{@render cup()}
+			</div>
 			{@render content()}
 			{@render fadeRight()}
 			{@render fadeLeft()}
 			<!-- {@render fadeBottom()} -->
 		</div>
-		<div class="hidden place-content-center text-white md:grid">
+		<div class="relative hidden place-content-center text-white md:grid">
 			<p class="font-display mb-2 text-xl">Transform your digital footprint.</p>
+			<div class="absolute top-20 h-[250px]">
+				{@render cup()}
+			</div>
 			<!-- <button -->
 			<!-- 	class="w-fit rounded-full border-[1px] border-gray-800/50 bg-gradient-to-t from-gray-900 to-gray-700/50 px-2 font-sans text-sm" -->
 			<!-- > -->
