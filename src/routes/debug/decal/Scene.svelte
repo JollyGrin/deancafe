@@ -1,10 +1,17 @@
 <script lang="ts">
-	import { T } from '@threlte/core';
-	import { OrbitControls, useGltf, useTexture, interactivity } from '@threlte/extras';
+	import { T, useThrelte } from '@threlte/core';
+	import {
+		OrbitControls,
+		useGltf,
+		useTexture,
+		interactivity,
+		useInteractivity
+	} from '@threlte/extras';
 	import * as THREE from 'three';
 	import { DecalGeometry } from 'three/examples/jsm/geometries/DecalGeometry.js';
 	import { DEG2RAD } from 'three/src/math/MathUtils.js';
 	import { DecalMaterial } from '$lib/shaders/decalMaterial';
+	import { bvhRaycasting } from '$lib/raycasting/bvhRaycasting.svelte';
 
 	type Event = THREE.Intersection & {
 		intersections: THREE.Intersection[]; // The first intersection of each intersected object
@@ -19,8 +26,32 @@
 		stopped: boolean; // Whether the event propagation has been stopped
 	};
 
+	const { camera } = useThrelte();
+
+	bvhRaycasting();
+
+	let intersectionPoint: THREE.Vector3 | null = $state(null);
+
 	// add interactivity
-	interactivity();
+	interactivity({
+		compute: (event, state) => {
+			// Update the pointer
+
+			if (!bunnyMesh) return;
+			const intersects = state.raycaster.intersectObject(bunnyMesh);
+			const [intersection] = intersects;
+			intersectionPoint = intersection?.point ?? null;
+			console.log({ intersectionPoint });
+
+			state.pointer.update((p) => {
+				p.x = (event.clientX / window.innerWidth) * 2 - 1;
+				p.y = -(event.clientY / window.innerHeight) * 2 + 1;
+				return p;
+			});
+			// Update the raycaster
+			state.raycaster.setFromCamera(state.pointer.current, $camera);
+		}
+	});
 
 	// Load the bunny model using useGltf
 	const gltfPromise = useGltf(
@@ -58,6 +89,8 @@
 	];
 
 	let bunnyMesh: THREE.Mesh | undefined = $state();
+
+	const { pointer, target } = useInteractivity();
 </script>
 
 {#await Promise.all([gltfPromise, texturesPromise]) then [gltf, textures]}
@@ -90,6 +123,12 @@
 			<T.PlaneGeometry args={[20, 20]} />
 			<T.ShadowMaterial opacity={0.2} />
 		</T.Mesh>
+
+		{#if !!intersectionPoint}
+			<T.Mesh position={[intersectionPoint.x, intersectionPoint.y, intersectionPoint.z]}>
+				<T.SphereGeometry args={[0.2, 0.2, 0.2]} />
+			</T.Mesh>
+		{/if}
 
 		<T.Group position={[0.25, -1, 0]}>
 			<!-- Bunny mesh -->
