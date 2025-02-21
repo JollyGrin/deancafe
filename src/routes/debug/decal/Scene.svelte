@@ -39,9 +39,9 @@
 	</T.PerspectiveCamera>
 
 	<T.Scene>
-		<T.AmbientLight intensity={0.2} />
-		<T.SpotLight 
-			position={[4, 8, 4]} 
+		<T.AmbientLight intensity={7} />
+		<T.SpotLight
+			position={[4, 8, 4]}
 			intensity={1.5}
 			angle={0.4}
 			penumbra={0.8}
@@ -54,25 +54,16 @@
 		<T.DirectionalLight position={[0, -2, -6]} intensity={0.2} color="#ffd0d0" />
 
 		<!-- Ground plane for shadow -->
-		<T.Mesh 
-			rotation.x={-Math.PI / 2}
-			position.y={-1.01}
-			receiveShadow
-		>
+		<T.Mesh rotation.x={-Math.PI / 2} position.y={-1.01} receiveShadow>
 			<T.PlaneGeometry args={[20, 20]} />
 			<T.ShadowMaterial opacity={0.2} />
 		</T.Mesh>
 
 		<T.Group position={[0.25, -1, 0]}>
 			<!-- Bunny mesh -->
-			<T.Mesh 
-				bind:ref={bunnyMesh}
-				castShadow 
-				receiveShadow 
-				geometry={gltf.nodes.bunny.geometry}
-			>
-				<T.MeshStandardMaterial 
-					color="black" 
+			<T.Mesh bind:ref={bunnyMesh} castShadow receiveShadow geometry={gltf.nodes.bunny.geometry}>
+				<T.MeshStandardMaterial
+					color="black"
 					roughness={0.6}
 					metalness={0.1}
 					envMapIntensity={1.2}
