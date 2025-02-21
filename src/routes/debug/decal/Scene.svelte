@@ -49,8 +49,19 @@
 			distance={20}
 			castShadow
 		/>
+		<T.SpotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
 		<T.DirectionalLight position={[-4, 2, -4]} intensity={0.3} color="#b6ceff" />
 		<T.DirectionalLight position={[0, -2, -6]} intensity={0.2} color="#ffd0d0" />
+
+		<!-- Ground plane for shadow -->
+		<T.Mesh 
+			rotation.x={-Math.PI / 2}
+			position.y={-1.01}
+			receiveShadow
+		>
+			<T.PlaneGeometry args={[20, 20]} />
+			<T.ShadowMaterial opacity={0.2} />
+		</T.Mesh>
 
 		<T.Group position={[0.25, -1, 0]}>
 			<!-- Bunny mesh -->
