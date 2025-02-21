@@ -65,12 +65,6 @@
 	];
 
 	let bunnyMesh: THREE.Mesh | undefined = $state();
-
-	// For debugging hover state
-	$effect(() => {
-		console.log('Hovered sticker:', hoveredSticker);
-	});
-	$inspect(hoveredSticker);
 </script>
 
 {#await Promise.all([gltfPromise, texturesPromise]) then [gltf, textures]}
@@ -110,7 +104,7 @@
 				<T.MeshStandardMaterial
 					color="white"
 					roughness={0.6}
-					metalness={0.1}
+					metalness={0.8}
 					envMapIntensity={1.2}
 				/>
 
@@ -129,7 +123,7 @@
 							<T
 								is={DecalMaterial}
 								map={texture}
-								outlineColor="red"
+								outlineColor="gold"
 								outlineWidth={10}
 								alphaThreshold={0.5}
 							/>
