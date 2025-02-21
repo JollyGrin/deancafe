@@ -2,6 +2,7 @@
 	import { T } from '@threlte/core';
 	import { OrbitControls, useGltf, useTexture } from '@threlte/extras';
 	import * as THREE from 'three';
+	import { DecalGeometry } from 'three/examples/jsm/geometries/DecalGeometry.js';
 
 	// Load the bunny model using useGltf
 	const gltfPromise = useGltf(
@@ -23,11 +24,13 @@
 
 	// Sticker positions and configurations
 	const stickerConfigs = [
-		{ position: [-0.1, 1.3, 0.55], rotation: -0.5, scale: 0.45 },
-		{ position: [0.4, 1, 0.55], rotation: 0, scale: 0.3 },
-		{ position: [0, 0.7, 0.85], rotation: 0, scale: 0.35 },
-		{ position: [-0.5, 1, 0.7], rotation: 1, scale: 0.3 }
+		{ position: [-0.1, 1.3, 0.55], rotation: [-0.5, 0, 0], scale: [0.45, 0.45, 1] },
+		{ position: [0.4, 1, 0.55], rotation: [0, 0, 0], scale: [0.3, 0.3, 1] },
+		{ position: [0, 0.7, 0.85], rotation: [0, 0, 0], scale: [0.35, 0.35, 1] },
+		{ position: [-0.5, 1, 0.7], rotation: [0, 1, 0], scale: [0.3, 0.3, 1] }
 	];
+
+	let bunnyMesh: THREE.Mesh;
 </script>
 
 {#await Promise.all([gltfPromise, texturesPromise]) then [gltf, textures]}
@@ -41,24 +44,33 @@
 
 		<T.Group position={[0.25, -1, 0]}>
 			<!-- Bunny mesh -->
-			<T.Mesh castShadow receiveShadow geometry={gltf.nodes.bunny.geometry}>
+			<T.Mesh 
+				bind:ref={bunnyMesh}
+				castShadow 
+				receiveShadow 
+				geometry={gltf.nodes.bunny.geometry}
+			>
 				<T.MeshStandardMaterial color="black" roughness={0.9} />
 
 				<!-- Stickers -->
 				{#each Object.entries(textures) as [key, texture], i}
-					{#if i < stickerConfigs.length}
+					{#if i < stickerConfigs.length && bunnyMesh}
 						<T.Mesh
-							position={stickerConfigs[i].position as [number, number, number]}
-							rotation.y={stickerConfigs[i].rotation}
-							scale={stickerConfigs[i].scale}
+							geometry={new DecalGeometry(
+								bunnyMesh,
+								new THREE.Vector3(...stickerConfigs[i].position),
+								new THREE.Euler(...stickerConfigs[i].rotation),
+								new THREE.Vector3(...stickerConfigs[i].scale)
+							)}
 						>
-							<T.PlaneGeometry />
 							<T.MeshPhysicalMaterial
 								map={texture}
 								transparent
-								polygonOffset
-								polygonOffsetFactor={-10}
-								flipY={false}
+								depthTest={true}
+								depthWrite={false}
+								polygonOffset={true}
+								polygonOffsetFactor={-4}
+								wireframe={debug}
 								iridescence={1}
 								iridescenceIOR={1}
 								iridescenceThicknessRange={[0, 1400]}
