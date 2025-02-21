@@ -42,7 +42,6 @@
 			if (!bunnyMesh) return;
 			const intersects = state.raycaster.intersectObject(bunnyMesh);
 			const [intersection] = intersects;
-			console.log({ intersection });
 			intersectionPoint = intersection?.point ?? null;
 
 			state.pointer.update((p) => {
@@ -96,9 +95,7 @@
 		if (isDragging && hoveredSticker && intersectionPoint) {
 			const sticker = stickerConfigs.find((s) => s.id === hoveredSticker);
 			if (sticker) {
-				console.log('HIT');
 				const [x, y, z] = bunneyPostion;
-				console.log({ x, y, z });
 				sticker.position = [intersectionPoint.x, intersectionPoint.y, intersectionPoint.z];
 			}
 		}
@@ -135,9 +132,6 @@
 			window.removeEventListener('keyup', handleKeyUp);
 		};
 	});
-
-	$inspect(isDragging);
-	$inspect(isSpacePressed);
 </script>
 
 <svelte:window on:keydown|preventDefault={handleKeyDown} on:keyup|preventDefault={handleKeyUp} />
@@ -148,7 +142,7 @@
 			maxPolarAngle={DEG2RAD * 90}
 			enableRotate={!isDragging}
 			enableDamping
-			enablePan={false}
+			enablePan={true}
 		/>
 	</T.PerspectiveCamera>
 
