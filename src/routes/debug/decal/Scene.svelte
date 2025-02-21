@@ -110,17 +110,20 @@
 
 				<!-- Stickers -->
 				{#each Object.entries(textures) as [key, texture], i}
+					{@const sticker = stickerConfigs[i]}
 					{#if i < stickerConfigs.length && bunnyMesh}
 						<T.Mesh
 							geometry={new DecalGeometry(
 								bunnyMesh,
-								new THREE.Vector3(...stickerConfigs[i].position),
-								new THREE.Euler(...stickerConfigs[i].rotation),
-								new THREE.Vector3(...stickerConfigs[i].scale)
+								new THREE.Vector3(...sticker.position),
+								new THREE.Euler(...sticker.rotation),
+								new THREE.Vector3(...sticker.scale)
 							)}
 							interactive
+							onpointerover={() => (hoveredSticker = sticker.id)}
+							onpointerout={() => (hoveredSticker = null)}
 						>
-							{#if false}
+							{#if sticker.id === hoveredSticker}
 								<T
 									is={DecalMaterial}
 									map={texture}
