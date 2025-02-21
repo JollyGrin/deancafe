@@ -89,7 +89,7 @@
 
 	let bunnyMesh: THREE.Mesh | undefined = $state();
 
-	const { pointer, target } = useInteractivity();
+	$inspect(isDragging);
 </script>
 
 {#await Promise.all([gltfPromise, texturesPromise]) then [gltf, textures]}
@@ -154,6 +154,12 @@
 							interactive
 							onpointerover={() => (hoveredSticker = sticker.id)}
 							onpointerout={() => (hoveredSticker = null)}
+							onpointerdown={() => {
+								isDragging = true;
+							}}
+							onpointerup={() => {
+								isDragging = false;
+							}}
 							onmove={(e: Event) => {
 								// TODO: add the dragging state?
 							}}
