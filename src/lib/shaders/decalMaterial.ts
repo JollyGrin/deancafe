@@ -30,39 +30,37 @@ const DecalShader = {
         varying vec3 vNormal;
         varying vec3 vViewPosition;
 
-        float getAlpha(vec2 uv) {
-            return texture2D(map, uv).a;
+        float getMaxAlpha(vec2 uv, float radius) {
+            float maxAlpha = 0.0;
+            int samples = 16; // Number of samples to check
+            
+            for(int i = 0; i < samples; i++) {
+                float angle = float(i) * 6.28318 / float(samples);
+                vec2 offset = vec2(cos(angle), sin(angle)) * radius;
+                maxAlpha = max(maxAlpha, texture2D(map, uv + offset).a);
+            }
+            
+            return maxAlpha;
         }
 
         void main() {
             vec4 texColor = texture2D(map, vUv);
+            float alpha = texColor.a;
             
-            // Check neighboring pixels for alpha differences
-            vec2 texelSize = vec2(1.0) / vec2(textureSize(map, 0));
-            float alpha = getAlpha(vUv);
+            // Calculate the outline
+            float outlineRadius = outlineWidth * 0.001; // Scale the width
+            float outerAlpha = getMaxAlpha(vUv, outlineRadius);
             
-            // Sample neighboring pixels
-            float leftAlpha = getAlpha(vUv + vec2(-texelSize.x, 0.0));
-            float rightAlpha = getAlpha(vUv + vec2(texelSize.x, 0.0));
-            float topAlpha = getAlpha(vUv + vec2(0.0, texelSize.y));
-            float bottomAlpha = getAlpha(vUv + vec2(0.0, -texelSize.y));
-
-            // Calculate edge detection
+            // Create the outline effect
             float outline = 0.0;
-            if (alpha > alphaThreshold) {
-                // Check if any neighboring pixel has alpha below threshold
-                if (leftAlpha < alphaThreshold || 
-                    rightAlpha < alphaThreshold || 
-                    topAlpha < alphaThreshold || 
-                    bottomAlpha < alphaThreshold) {
-                    outline = 1.0;
-                }
+            if (alpha < alphaThreshold && outerAlpha > alphaThreshold) {
+                outline = 1.0;
             }
-
-            // Apply outline
+            
+            // Blend between texture and outline color
             vec3 finalColor = mix(texColor.rgb, outlineColor, outline);
             float finalAlpha = max(texColor.a, outline);
-
+            
             gl_FragColor = vec4(finalColor, finalAlpha);
         }
     `

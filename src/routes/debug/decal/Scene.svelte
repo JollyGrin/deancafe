@@ -130,8 +130,8 @@
 								is={DecalMaterial}
 								map={texture}
 								outlineColor="red"
-								outlineWidth={0.1}
-								alphaThreshold={0.1}
+								outlineWidth={10}
+								alphaThreshold={0.5}
 							/>
 						</T.Mesh>
 					{/if}
