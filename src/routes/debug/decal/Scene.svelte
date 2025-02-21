@@ -22,6 +22,9 @@
 	// Debug state
 	let debug = false;
 
+	// Hover state using $state
+	let hoveredSticker: string | null = $state(null);
+
 	// Sticker positions and configurations
 	const stickerConfigs = [
 		{ position: [-0.1, 1.3, 0.55], rotation: [-0.5, 0, 0], scale: [0.45, 0.45, 1] },
@@ -30,7 +33,13 @@
 		{ position: [-0.5, 1, 0.7], rotation: [0, 1, 0], scale: [0.3, 0.3, 1] }
 	];
 
-	let bunnyMesh: THREE.Mesh;
+	let bunnyMesh: THREE.Mesh | undefined = $state();
+
+	// For debugging hover state
+	$effect(() => {
+		console.log('Hovered sticker:', hoveredSticker);
+	});
+	$inspect(hoveredSticker);
 </script>
 
 {#await Promise.all([gltfPromise, texturesPromise]) then [gltf, textures]}
@@ -79,6 +88,9 @@
 								new THREE.Euler(...stickerConfigs[i].rotation),
 								new THREE.Vector3(...stickerConfigs[i].scale)
 							)}
+							interactive
+							on:pointerenter={() => (hoveredSticker = key)}
+							on:pointerleave={() => (hoveredSticker = null)}
 						>
 							<T.MeshPhysicalMaterial
 								map={texture}
