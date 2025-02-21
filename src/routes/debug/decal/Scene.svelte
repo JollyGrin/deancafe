@@ -41,7 +41,6 @@
 			const intersects = state.raycaster.intersectObject(bunnyMesh);
 			const [intersection] = intersects;
 			intersectionPoint = intersection?.point ?? null;
-			console.log({ intersectionPoint });
 
 			state.pointer.update((p) => {
 				p.x = (event.clientX / window.innerWidth) * 2 - 1;
