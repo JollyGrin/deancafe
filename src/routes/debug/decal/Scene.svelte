@@ -4,6 +4,19 @@
 	import * as THREE from 'three';
 	import { DecalGeometry } from 'three/examples/jsm/geometries/DecalGeometry.js';
 
+	type Event = THREE.Intersection & {
+		intersections: THREE.Intersection[]; // The first intersection of each intersected object
+		object: THREE.Object3D; // The object that was actually hit
+		eventObject: THREE.Object3D; // The object that registered the event
+		camera: THREE.Camera; // The camera used for raycasting
+		delta: THREE.Vector2; //  Distance between mouse down and mouse up event in pixels
+		nativeEvent: MouseEvent | PointerEvent | WheelEvent; // The native browser event
+		pointer: THREE.Vector2; // The pointer position in normalized device coordinates
+		ray: THREE.Ray; // The ray used for raycasting
+		stopPropagation: () => void; // Function to stop propagation of the event
+		stopped: boolean; // Whether the event propagation has been stopped
+	};
+
 	// add interactivity
 	interactivity();
 
@@ -27,6 +40,7 @@
 
 	// Hover state using $state
 	let hoveredSticker: string | null = $state(null);
+	let isDragging: boolean = $state(false);
 
 	// Sticker positions and configurations
 	const stickerConfigs = [
@@ -47,7 +61,11 @@
 
 {#await Promise.all([gltfPromise, texturesPromise]) then [gltf, textures]}
 	<T.PerspectiveCamera position={[2, 2, 10]} fov={20} makeDefault>
-		<OrbitControls minPolarAngle={Math.PI / 2} maxPolarAngle={Math.PI / 2} />
+		<OrbitControls
+			minPolarAngle={Math.PI / 2}
+			maxPolarAngle={Math.PI / 2}
+			enableRotate={!isDragging}
+		/>
 	</T.PerspectiveCamera>
 
 	<T.Scene>
@@ -96,13 +114,24 @@
 							oncontextmenu={(e) => console.log('context menu')}
 							ondblclick={(e) => console.log('double click')}
 							onwheel={(e) => console.log('wheel')}
-							onpointerup={(e) => console.log('up')}
-							onpointerdown={(e) => console.log('down', e)}
+							onpointerup={(e: Event) => {
+								e.stopPropagation();
+								console.log('down', e);
+								isDragging = false;
+							}}
+							onpointerdown={(e: Event) => {
+								e.stopPropagation();
+								console.log('down', e);
+								isDragging = true;
+							}}
 							onpointerover={(e) => console.log('over')}
 							onpointerout={(e) => console.log('out')}
 							onpointerenter={(e) => console.log('enter')}
 							onpointerleave={(e) => console.log('leave')}
-							onpointermove={(e) => console.log('move')}
+							onpointermove={(e: Event) => {
+								console.log('down', e);
+								e.stopPropagation();
+							}}
 							onpointermissed={() => console.log('missed')}
 						>
 							<T.MeshPhysicalMaterial
