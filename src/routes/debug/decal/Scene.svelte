@@ -1,13 +1,6 @@
 <script lang="ts">
 	import { T } from '@threlte/core';
-	import {
-		OrbitControls,
-		useGltf,
-		useTexture,
-		interactivity,
-		Edges,
-		Outlines
-	} from '@threlte/extras';
+	import { OrbitControls, useGltf, useTexture, interactivity } from '@threlte/extras';
 	import * as THREE from 'three';
 	import { DecalGeometry } from 'three/examples/jsm/geometries/DecalGeometry.js';
 	import { DEG2RAD } from 'three/src/math/MathUtils.js';
@@ -122,6 +115,9 @@
 							interactive
 							onpointerover={() => (hoveredSticker = sticker.id)}
 							onpointerout={() => (hoveredSticker = null)}
+							onmove={(e: Event) => {
+								// TODO: add the dragging state?
+							}}
 						>
 							{#if sticker.id === hoveredSticker}
 								<T
