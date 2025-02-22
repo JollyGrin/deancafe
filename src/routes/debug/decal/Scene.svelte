@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { T, useThrelte } from '@threlte/core';
+	import { T, useTask, useThrelte } from '@threlte/core';
 	import { OrbitControls, useGltf, useTexture, interactivity, HUD } from '@threlte/extras';
 	import * as THREE from 'three';
 	import { DecalGeometry } from 'three/examples/jsm/geometries/DecalGeometry.js';
@@ -7,6 +7,7 @@
 	import { DecalMaterial } from '$lib/shaders/decalMaterial';
 	import { bvhRaycasting } from '$lib/raycasting/bvhRaycasting.svelte';
 	import HudScene from './HUDScene.svelte';
+	import { onMount } from 'svelte';
 
 	type Event = THREE.Intersection & {
 		intersections: THREE.Intersection[]; // The first intersection of each intersected object
@@ -67,6 +68,7 @@
 	let hoveredSticker: string | null = $state(null);
 	let isDragging: boolean = $state(false);
 	let draggedSticker: string | null = $state(null);
+	let selectedTexture: THREE.Texture | null = $state(null);
 
 	// Sticker positions and configurations
 	const stickerConfigs = $state([
@@ -76,7 +78,7 @@
 			rotation: [-0.5, 0, 0],
 			scale: [0.45, 0.45, 1]
 		},
-		{ id: 'sticker_smile', position: [0.6, 1, 0.55], rotation: [7, 0, 0], scale: [0.3, 0.3, 1] },
+		{ id: 'sticker_smile', position: [0.6, 1, 0.55], rotation: [1, 0, 0], scale: [0.3, 0.3, 1] },
 		{ id: 'sticker_heart', position: [0, 0.7, 0.85], rotation: [0, 0, 0], scale: [0.35, 0.35, 1] },
 		{ id: 'sticker_four', position: [-0.5, 1, 0.7], rotation: [0, 1, 0], scale: [0.3, 0.3, 1] }
 	]);
@@ -92,6 +94,9 @@
 	});
 
 	let bunnyMesh: THREE.Mesh | undefined = $state();
+
+	const quaternion = new THREE.Quaternion();
+	useTask(() => quaternion.copy(camera.current.quaternion).invert(), { autoInvalidate: false });
 
 	// Keyboard state
 	let isSpacePressed = $state(false);
@@ -118,7 +123,7 @@
 
 {#await Promise.all([gltfPromise, texturesPromise]) then [gltf, textures]}
 	<HUD>
-		<HudScene {textures} />
+		<HudScene texture={selectedTexture} {quaternion} />
 	</HUD>
 
 	<T.PerspectiveCamera position={[2, 2, 10]} fov={20} makeDefault {camera}>
@@ -132,6 +137,7 @@
 
 	<T.Scene>
 		{@render lightsEnvironment()} // lights
+		{@render lightsGroupShadow()}
 		{@render floor()} // ground for lighting
 
 		{#if !!intersectionPoint}
@@ -141,42 +147,44 @@
 			</T.Mesh>
 		{/if}
 
-		{@render lightsGroupShadow()}
-		<T.Group position={[0, 0, 0]}>
-			<!-- Bunny mesh -->
-			<T.Mesh bind:ref={bunnyMesh} castShadow receiveShadow geometry={gltf.nodes.bunny.geometry}>
-				<T.MeshStandardMaterial
-					color="white"
-					roughness={0.6}
-					metalness={0.8}
-					envMapIntensity={1.2}
-				/>
-
-				<!-- Stickers -->
-				{#each Object.entries(textures) as [key, texture], i}
-					{@const sticker = stickerConfigs[i]}
-					{#if i < stickerConfigs.length && bunnyMesh}
-						<T.Mesh
-							geometry={new DecalGeometry(
-								bunnyMesh,
-								new THREE.Vector3(...sticker.position),
-								new THREE.Euler(...sticker.rotation),
-								new THREE.Vector3(...sticker.scale)
-							)}
-							interactive
-							onpointerover={() => (hoveredSticker = sticker.id)}
-							onpointerout={() => (hoveredSticker = null)}
-						>
-							{#if sticker.id === hoveredSticker}
-								{@render hoverSticker(texture)}
-							{:else}
-								{@render realSticker(texture)}
-							{/if}
-						</T.Mesh>
+		{#each Object.entries(textures) as [key, texture], i}
+			{@const sticker = stickerConfigs[i]}
+			{#if i < stickerConfigs.length && bunnyMesh}
+				<T.Mesh
+					geometry={new DecalGeometry(
+						bunnyMesh,
+						new THREE.Vector3(...sticker.position),
+						new THREE.Euler(...sticker.rotation),
+						new THREE.Vector3(...sticker.scale)
+					)}
+					interactive
+					onpointerover={() => {
+						hoveredSticker = sticker.id;
+						selectedTexture = texture;
+					}}
+					onpointerout={() => {
+						hoveredSticker = null;
+						selectedTexture = null;
+					}}
+				>
+					{#if sticker.id === hoveredSticker}
+						{@render hoverSticker(texture)}
+					{:else}
+						{@render realSticker(texture)}
 					{/if}
-				{/each}
-			</T.Mesh>
-		</T.Group>
+				</T.Mesh>
+			{/if}
+		{/each}
+
+		<T.Mesh
+			bind:ref={bunnyMesh}
+			castShadow
+			receiveShadow
+			geometry={gltf.nodes.bunny.geometry}
+			position={[0, -1, 0]}
+		>
+			<T.MeshStandardMaterial color="white" roughness={0.6} metalness={0.8} envMapIntensity={1.2} />
+		</T.Mesh>
 	</T.Scene>
 {/await}
 
