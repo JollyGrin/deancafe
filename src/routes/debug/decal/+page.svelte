@@ -6,7 +6,7 @@
 </script>
 
 <div class="relative h-full">
-	<div class="absolute m-2 opacity-20">
+	<div class="absolute z-50 m-2 opacity-20">
 		<p>Hold Space to drag a sticker</p>
 		<p>While hovering over a sticker, use arrow keys to rotate</p>
 		<a href={git}> git </a>
