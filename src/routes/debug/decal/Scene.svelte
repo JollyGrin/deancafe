@@ -88,9 +88,20 @@
 		{ id: 'sticker_four', position: [-0.4, 0.2, 0.7], rotation: [0, 1, 0], scale: [0.3, 0.3, 1] }
 	]);
 
+	// HACK: updates the matrix so that the stickers render after the bunny position changes position
+	let matrixVersion = $state(0);
+	const { start, stop } = useTask(() => {
+		if (matrixVersion > 5) return;
+		if (bunnyMesh) {
+			bunnyMesh.updateMatrixWorld();
+			matrixVersion++;
+		}
+	});
+
 	// Update sticker position when dragging
 	$effect(() => {
 		if (!!draggedSticker && intersectionPoint) {
+			stop(); // HACK: stop updating matrix
 			const sticker = stickerConfigs.find((s) => s.id === draggedSticker);
 			if (sticker) {
 				sticker.position = [intersectionPoint.x, intersectionPoint.y, intersectionPoint.z];
@@ -146,9 +157,19 @@
 		{@render floor()} // ground for lighting
 		{@render intersectionDot()} // raycasting dot
 
+		<T.Mesh
+			bind:ref={bunnyMesh}
+			castShadow
+			receiveShadow
+			geometry={gltf.nodes.bunny.geometry}
+			position={[0, -1, 0]}
+		>
+			<T.MeshStandardMaterial color="white" roughness={0.6} metalness={0.8} envMapIntensity={1.2} />
+		</T.Mesh>
+
 		{#each Object.entries(textures) as [key, texture], i}
 			{@const sticker = stickerConfigs[i]}
-			{#if i < stickerConfigs.length && bunnyMesh}
+			{#if i < stickerConfigs.length && bunnyMesh && matrixVersion}
 				<T.Mesh
 					geometry={new DecalGeometry(
 						bunnyMesh,
@@ -174,16 +195,6 @@
 				</T.Mesh>
 			{/if}
 		{/each}
-
-		<T.Mesh
-			bind:ref={bunnyMesh}
-			castShadow
-			receiveShadow
-			geometry={gltf.nodes.bunny.geometry}
-			position={[0, -1, 0]}
-		>
-			<T.MeshStandardMaterial color="white" roughness={0.6} metalness={0.8} envMapIntensity={1.2} />
-		</T.Mesh>
 	</T.Scene>
 {/await}
 
