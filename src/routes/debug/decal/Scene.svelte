@@ -5,9 +5,7 @@
 	import { DecalGeometry } from 'three/examples/jsm/geometries/DecalGeometry.js';
 	import { DEG2RAD } from 'three/src/math/MathUtils.js';
 	import { DecalMaterial } from '$lib/shaders/decalMaterial';
-	import { bvhRaycasting } from '$lib/raycasting/bvhRaycasting.svelte';
 	import HudScene from './HUDScene.svelte';
-	import { onMount } from 'svelte';
 
 	type Event = THREE.Intersection & {
 		intersections: THREE.Intersection[]; // The first intersection of each intersected object
@@ -74,18 +72,28 @@
 	const stickerConfigs = $state([
 		{
 			id: 'sticker_heart',
-			position: [0.4, 0.2, 0.85],
+			position: [0.37119736622026034, -0.014923112415556439, 0.6328978861512411],
 			rotation: [0, 0, 0],
 			scale: [0.35, 0.35, 1]
 		},
-		{ id: 'sticker_smile', position: [-0.3, -0.2, 0.9], rotation: [1, 0, 0], scale: [0.3, 0.3, 1] },
+		{
+			id: 'sticker_smile',
+			position: [0.004341807832027644, 0.3585630991995048, 0.2383905658327521],
+			rotation: [1, 0, 0],
+			scale: [0.3, 0.3, 1]
+		},
 		{
 			id: 'sticker_nasa',
-			position: [0, 0.3, 1],
+			position: [-0.33548826510530505, 0.029074589004543405, 0.6578025135968337],
 			rotation: [0, 0, 0],
 			scale: [0.45, 0.45, 1]
 		},
-		{ id: 'sticker_four', position: [-0.4, 0.2, 0.7], rotation: [0, 1, 0], scale: [0.3, 0.3, 1] }
+		{
+			id: 'sticker_four',
+			position: [-0.6907987751893973, 0.19100986131516118, 0.6269019724164728],
+			rotation: [0, 1, 0],
+			scale: [0.3, 0.3, 1]
+		}
 	]);
 
 	// HACK: updates the matrix so that the stickers render after the bunny position changes position
@@ -129,6 +137,12 @@
 
 	function handleKeyUp(event: KeyboardEvent) {
 		if (event.code !== 'Space') return;
+
+		console.log(
+			'new sticker',
+			stickerConfigs.find((s) => s.id === draggedSticker)
+		);
+
 		isSpacePressed = false;
 		isDragging = false;
 		draggedSticker = null;
