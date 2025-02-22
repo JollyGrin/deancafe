@@ -1,18 +1,12 @@
 <script lang="ts">
 	import { T, useThrelte } from '@threlte/core';
-	import {
-		OrbitControls,
-		useGltf,
-		useTexture,
-		interactivity,
-		useInteractivity
-	} from '@threlte/extras';
+	import { OrbitControls, useGltf, useTexture, interactivity, HUD } from '@threlte/extras';
 	import * as THREE from 'three';
 	import { DecalGeometry } from 'three/examples/jsm/geometries/DecalGeometry.js';
 	import { DEG2RAD } from 'three/src/math/MathUtils.js';
 	import { DecalMaterial } from '$lib/shaders/decalMaterial';
 	import { bvhRaycasting } from '$lib/raycasting/bvhRaycasting.svelte';
-	import { onMount } from 'svelte';
+	import HudScene from './HUDScene.svelte';
 
 	type Event = THREE.Intersection & {
 		intersections: THREE.Intersection[]; // The first intersection of each intersected object
@@ -28,8 +22,6 @@
 	};
 
 	const { camera } = useThrelte();
-
-	bvhRaycasting();
 
 	let intersectionPoint: THREE.Vector3 | null = $state(null);
 
@@ -125,6 +117,10 @@
 <svelte:window on:keydown|preventDefault={handleKeyDown} on:keyup|preventDefault={handleKeyUp} />
 
 {#await Promise.all([gltfPromise, texturesPromise]) then [gltf, textures]}
+	<HUD>
+		<HudScene {textures} />
+	</HUD>
+
 	<T.PerspectiveCamera position={[2, 2, 10]} fov={20} makeDefault {camera}>
 		<OrbitControls
 			maxPolarAngle={DEG2RAD * 90}
