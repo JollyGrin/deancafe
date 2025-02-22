@@ -90,7 +90,7 @@
 		},
 		{
 			id: 'sticker_four',
-			position: [-0.6907987751893973, 0.19100986131516118, 0.6269019724164728],
+			position: [-0.9987768252849216, 0.5757206970809765, 0.7284706017893905],
 			rotation: [0, 1, 0],
 			scale: [0.3, 0.3, 1]
 		}
@@ -127,6 +127,28 @@
 
 	// Handle keyboard events
 	function handleKeyDown(event: KeyboardEvent) {
+		if (event.code.includes('Arrow') || ['Comma', 'Period'].includes(event.code)) {
+			const isLeft = event.code === 'ArrowLeft';
+			const isRight = event.code === 'ArrowRight';
+			const isUp = event.code === 'ArrowUp';
+			const isDown = event.code === 'ArrowDown';
+			const isZ = event.code === 'Comma';
+			const isZNeg = event.code === 'Period';
+
+			const z = isLeft ? -0.1 : isRight ? 0.1 : 0;
+			const x = isUp ? -0.1 : isDown ? 0.1 : 0;
+			const y = isZ ? -0.1 : isZNeg ? 0.1 : 0;
+
+			const sticker = stickerConfigs.find((s) => s.id === hoveredSticker);
+			if (sticker) {
+				sticker.rotation = [
+					sticker.rotation[0] + x,
+					sticker.rotation[1] + y,
+					sticker.rotation[2] + z
+				];
+			}
+		}
+
 		if (event.code !== 'Space') return;
 		if (!!draggedSticker) return;
 		event.preventDefault(); // Prevent page scroll
