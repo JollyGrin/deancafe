@@ -85,7 +85,7 @@
 			rotation: [0, 0, 0],
 			scale: [0.45, 0.45, 1]
 		},
-		{ id: 'sticker_four', position: [-0.5, 1, 0.7], rotation: [0, 1, 0], scale: [0.3, 0.3, 1] }
+		{ id: 'sticker_four', position: [-0.4, 0.2, 0.7], rotation: [0, 1, 0], scale: [0.3, 0.3, 1] }
 	]);
 
 	// Update sticker position when dragging
@@ -144,13 +144,7 @@
 		{@render lightsEnvironment()} // lights
 		{@render lightsGroupShadow()}
 		{@render floor()} // ground for lighting
-
-		{#if !!intersectionPoint}
-			<T.Mesh position={[intersectionPoint.x, intersectionPoint.y, intersectionPoint.z]}>
-				<T.SphereGeometry args={[0.02, 32, 16]} />
-				<T.MeshBasicMaterial color="#ff0000" depthTest={false} />
-			</T.Mesh>
-		{/if}
+		{@render intersectionDot()} // raycasting dot
 
 		{#each Object.entries(textures) as [key, texture], i}
 			{@const sticker = stickerConfigs[i]}
@@ -192,6 +186,15 @@
 		</T.Mesh>
 	</T.Scene>
 {/await}
+
+{#snippet intersectionDot()}
+	{#if !!intersectionPoint}
+		<T.Mesh position={[intersectionPoint.x, intersectionPoint.y, intersectionPoint.z]}>
+			<T.SphereGeometry args={[0.02, 32, 16]} />
+			<T.MeshBasicMaterial color="#ff0000" depthTest={false} />
+		</T.Mesh>
+	{/if}
+{/snippet}
 
 {#snippet realSticker(texture: THREE.Texture)}
 	<T.MeshPhysicalMaterial
