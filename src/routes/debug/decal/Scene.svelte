@@ -135,25 +135,8 @@
 	</T.PerspectiveCamera>
 
 	<T.Scene>
-		<T.AmbientLight intensity={7} />
-		<T.SpotLight
-			position={[4, 8, 4]}
-			intensity={1.5}
-			angle={0.4}
-			penumbra={0.8}
-			decay={1.5}
-			distance={20}
-			castShadow
-		/>
-		<T.SpotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-		<T.DirectionalLight position={[-4, 2, -4]} intensity={0.3} color="#b6ceff" />
-		<T.DirectionalLight position={[0, -2, -6]} intensity={0.2} color="#ffd0d0" />
-
-		<!-- Ground plane for shadow -->
-		<T.Mesh rotation.x={-Math.PI / 2} position.y={-1.01} receiveShadow>
-			<T.PlaneGeometry args={[20, 20]} />
-			<T.ShadowMaterial opacity={0.2} />
-		</T.Mesh>
+		{@render lightsEnvironment()} // lights
+		{@render floor()} // ground for lighting
 
 		{#if !!intersectionPoint}
 			<T.Mesh position={[intersectionPoint.x, intersectionPoint.y, intersectionPoint.z]}>
@@ -162,6 +145,7 @@
 			</T.Mesh>
 		{/if}
 
+		{@render lightsGroupShadow()}
 		<T.Group position={[0, 0, 0]}>
 			<!-- Bunny mesh -->
 			<T.Mesh bind:ref={bunnyMesh} castShadow receiveShadow geometry={gltf.nodes.bunny.geometry}>
@@ -185,61 +169,74 @@
 							)}
 							interactive
 							onpointerover={() => (hoveredSticker = sticker.id)}
-							onpointerout={() => {
-								hoveredSticker = null;
-							}}
-							onmove={(e: Event) => {
-								if (isDragging && hoveredSticker === sticker.id && intersectionPoint) {
-									// Position is updated via the effect
-								}
-							}}
+							onpointerout={() => (hoveredSticker = null)}
 						>
 							{#if sticker.id === hoveredSticker}
-								<T
-									is={DecalMaterial}
-									map={texture}
-									outlineColor="gold"
-									outlineWidth={10}
-									alphaThreshold={0.5}
-								/>
+								{@render hoverSticker(texture)}
 							{:else}
-								<T.MeshPhysicalMaterial
-									map={texture}
-									transparent
-									depthTest={true}
-									depthWrite={false}
-									polygonOffset={true}
-									polygonOffsetFactor={-4}
-									wireframe={debug}
-									iridescence={1}
-									iridescenceIOR={2.2}
-									iridescenceThicknessRange={[100, 400]}
-									roughness={0.2}
-									metalness={0.8}
-									clearcoat={1}
-									clearcoatRoughness={0.1}
-									toneMapped={false}
-									envMapIntensity={2}
-								/>
+								{@render realSticker(texture)}
 							{/if}
 						</T.Mesh>
 					{/if}
 				{/each}
 			</T.Mesh>
-
-			<!-- Shadows -->
-			<T.Group position={[0, 0.04, 0]}>
-				<T.DirectionalLight
-					castShadow
-					position={[2.5, 5, -5]}
-					intensity={0.5}
-					shadow-bias={0.001}
-				/>
-			</T.Group>
 		</T.Group>
-
-		<!-- Environment -->
-		<T.AmbientLight intensity={0.5} />
-		<T.DirectionalLight position={[5, 5, 5]} intensity={0.5} />
 	</T.Scene>
 {/await}
+
+{#snippet realSticker(texture: THREE.Texture)}
+	<T.MeshPhysicalMaterial
+		map={texture}
+		transparent
+		depthTest={true}
+		depthWrite={false}
+		polygonOffset={true}
+		polygonOffsetFactor={-4}
+		wireframe={debug}
+		iridescence={1}
+		iridescenceIOR={2.2}
+		iridescenceThicknessRange={[100, 400]}
+		roughness={0.2}
+		metalness={0.8}
+		clearcoat={1}
+		clearcoatRoughness={0.1}
+		toneMapped={false}
+		envMapIntensity={2}
+	/>
+{/snippet}
+
+{#snippet hoverSticker(texture: THREE.Texture)}
+	<T is={DecalMaterial} map={texture} outlineColor="gold" outlineWidth={10} alphaThreshold={0.5} />
+{/snippet}
+
+{#snippet lightsEnvironment()}
+	<T.AmbientLight intensity={7} />
+	<T.SpotLight
+		position={[4, 8, 4]}
+		intensity={1.5}
+		angle={0.4}
+		penumbra={0.8}
+		decay={1.5}
+		distance={20}
+		castShadow
+	/>
+	<T.SpotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+	<T.DirectionalLight position={[-4, 2, -4]} intensity={0.3} color="#b6ceff" />
+	<T.DirectionalLight position={[0, -2, -6]} intensity={0.2} color="#ffd0d0" />
+
+	<T.AmbientLight intensity={0.5} />
+	<T.DirectionalLight position={[5, 5, 5]} intensity={0.5} />
+{/snippet}
+
+{#snippet lightsGroupShadow()}
+	<T.Group position={[0, 0.04, 0]}>
+		<T.DirectionalLight castShadow position={[2.5, 5, -5]} intensity={0.5} shadow-bias={0.001} />
+	</T.Group>
+{/snippet}
+
+{#snippet floor(y: number = -1.01)}
+	<T.Mesh rotation.x={-Math.PI / 2} position.y={y} receiveShadow>
+		<T.PlaneGeometry args={[20, 20]} />
+		<T.ShadowMaterial opacity={0.2} />
+	</T.Mesh>
+{/snippet}
