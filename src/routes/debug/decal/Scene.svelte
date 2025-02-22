@@ -91,8 +91,8 @@
 
 	// Update sticker position when dragging
 	$effect(() => {
-		if (isDragging && hoveredSticker && intersectionPoint) {
-			const sticker = stickerConfigs.find((s) => s.id === hoveredSticker);
+		if (!!draggedSticker && intersectionPoint) {
+			const sticker = stickerConfigs.find((s) => s.id === draggedSticker);
 			if (sticker) {
 				sticker.position = [intersectionPoint.x, intersectionPoint.y, intersectionPoint.z];
 			}
@@ -106,30 +106,20 @@
 
 	// Handle keyboard events
 	function handleKeyDown(event: KeyboardEvent) {
-		if (event.code === 'Space') {
-			event.preventDefault(); // Prevent page scroll
-			isSpacePressed = true;
-			isDragging = true;
-		}
+		if (event.code !== 'Space') return;
+		if (!!draggedSticker) return;
+		event.preventDefault(); // Prevent page scroll
+		isSpacePressed = true;
+		isDragging = true;
+		draggedSticker = hoveredSticker;
 	}
 
 	function handleKeyUp(event: KeyboardEvent) {
-		if (event.code === 'Space') {
-			isSpacePressed = false;
-			isDragging = false;
-		}
+		if (event.code !== 'Space') return;
+		isSpacePressed = false;
+		isDragging = false;
+		draggedSticker = null;
 	}
-
-	// Add and remove event listeners
-	onMount(() => {
-		window.addEventListener('keydown', handleKeyDown);
-		window.addEventListener('keyup', handleKeyUp);
-
-		return () => {
-			window.removeEventListener('keydown', handleKeyDown);
-			window.removeEventListener('keyup', handleKeyUp);
-		};
-	});
 </script>
 
 <svelte:window on:keydown|preventDefault={handleKeyDown} on:keyup|preventDefault={handleKeyUp} />
@@ -197,7 +187,6 @@
 							onpointerover={() => (hoveredSticker = sticker.id)}
 							onpointerout={() => {
 								hoveredSticker = null;
-								if (!isDragging) draggedSticker = null;
 							}}
 							onmove={(e: Event) => {
 								if (isDragging && hoveredSticker === sticker.id && intersectionPoint) {
