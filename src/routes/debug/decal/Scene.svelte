@@ -72,14 +72,19 @@
 
 	// Sticker positions and configurations
 	const stickerConfigs = $state([
-		{ id: 'sticker_heart', position: [0, 0.2, 0.85], rotation: [0, 0, 0], scale: [0.35, 0.35, 1] },
+		{
+			id: 'sticker_heart',
+			position: [0.4, 0.2, 0.85],
+			rotation: [0, 0, 0],
+			scale: [0.35, 0.35, 1]
+		},
+		{ id: 'sticker_smile', position: [-0.3, -0.2, 0.9], rotation: [1, 0, 0], scale: [0.3, 0.3, 1] },
 		{
 			id: 'sticker_nasa',
-			position: [0, 0, 1],
-			rotation: [-0.5, 0, 0],
+			position: [0, 0.3, 1],
+			rotation: [0, 0, 0],
 			scale: [0.45, 0.45, 1]
 		},
-		{ id: 'sticker_smile', position: [-0.1, -0.2, 0.9], rotation: [1, 0, 0], scale: [0.3, 0.3, 1] },
 		{ id: 'sticker_four', position: [-0.5, 1, 0.7], rotation: [0, 1, 0], scale: [0.3, 0.3, 1] }
 	]);
 
