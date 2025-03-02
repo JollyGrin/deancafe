@@ -17,6 +17,16 @@ export const PROJECTS = [
 		shader: shaderConfigRainbow
 	},
 	{
+		title: 'mijn wo',
+		description: 'custom data entry for insurance handling',
+		shader: shaderConfigRainbow
+	},
+	{
+		title: 'divorce rfp',
+		description: 'custom data entry for insurance handling',
+		shader: shaderConfigRainbow
+	},
+	{
 		title: 'teamplay',
 		description: 'videogame matchmaking',
 		shader: shaderConfigWaterGreen

@@ -27,7 +27,7 @@
 	onclick={() => (isOpen = !isOpen)}
 >
 	<div class="cube" class:isopen={isOpen}>
-		<div class=" grid h-full grid-cols-3 items-center justify-items-center px-4">
+		<div class="grid h-full grid-cols-3 items-center justify-items-center px-4">
 			<p class="justify-self-start text-2xl font-bold">{title}</p>
 			<p>Videogame matchmaking</p>
 			<p class="justify-self-end">(logo)</p>
@@ -39,12 +39,12 @@
 			<ShaderCanvas {shader} />
 		</div>
 	</div>
-	{#if isOpen}
-		<div class="w-full text-white" transition:slide>
-			<img src="https://picsum.photos/seed/6/1000/400" alt="banner" />
-		</div>
-	{/if}
 </div>
+{#if isOpen}
+	<div class="container w-full text-white" transition:slide>
+		<img src="https://picsum.photos/seed/6/1000/400" alt="banner" />
+	</div>
+{/if}
 
 <style>
 	.container {
@@ -58,7 +58,7 @@
 		height: 5rem;
 		width: 100%;
 		background: white;
-		transition: all 0.4s ease;
+		transition: all 0.5s ease;
 		position: relative;
 		transform-origin: bottom;
 		z-index: 100;
@@ -80,7 +80,7 @@
 	.topface {
 		transition:
 			transform,
-			rotate 0.4s ease;
+			rotate 0.5s ease;
 		position: absolute;
 		top: 0;
 		background-position: cover;
