@@ -11,10 +11,21 @@
 	let isHovering = $state(false);
 	const over = () => (isHovering = true);
 	const out = () => (isHovering = false);
+
+	let isOpen = $state(false);
 </script>
 
-<div class="container flex flex-col items-center" onmouseovercapture={over} onmouseoutcapture={out}>
-	<div class="cube">
+<div
+	tabindex="0"
+	onkeydown={() => {}}
+	role="checkbox"
+	aria-checked={isOpen}
+	class="container flex flex-col items-center"
+	onmouseovercapture={over}
+	onmouseoutcapture={out}
+	onclick={() => (isOpen = !isOpen)}
+>
+	<div class="cube" class:isopen={isOpen}>
 		<div class=" grid h-full grid-cols-3 items-center justify-items-center px-4">
 			<p class="justify-self-start text-2xl font-bold">{title}</p>
 			<p>Videogame matchmaking</p>
@@ -27,6 +38,9 @@
 			<ShaderCanvas {shader} />
 		</div>
 	</div>
+	{#if isOpen}
+		<div class="h-40 bg-white">hello</div>
+	{/if}
 </div>
 
 <style>
@@ -54,6 +68,12 @@
 		box-shadow: inset 0 -10px 5px rgba(0, 0, 0, 0.05);
 	}
 
+	.cube.isopen {
+		opacity: 1;
+		rotate: x -40deg;
+		box-shadow: inset 0 -10px 5px rgba(0, 0, 0, 0.05);
+	}
+
 	.topface {
 		transition:
 			transform,
@@ -69,6 +89,11 @@
 	}
 
 	.cube:hover .topface {
+		rotate: x 50deg;
+		box-shadow: inset 0 -5px 5px rgba(255, 255, 255, 0.2);
+	}
+
+	.cube.isopen .topface {
 		rotate: x 50deg;
 		box-shadow: inset 0 -5px 5px rgba(255, 255, 255, 0.2);
 	}
