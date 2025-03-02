@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ShaderCanvas from '$lib/shader/ShaderCanvas.svelte';
 	import { shaderConfigWarpGrid } from '$lib/shader/shaders/shader-warpgrid';
+	import { slide } from 'svelte/transition';
 
 	let {
 		title = 'title',
@@ -39,7 +40,9 @@
 		</div>
 	</div>
 	{#if isOpen}
-		<div class="h-40 bg-white">hello</div>
+		<div class="w-full text-white" transition:slide>
+			<img src="https://picsum.photos/seed/6/1000/400" alt="banner" />
+		</div>
 	{/if}
 </div>
 
