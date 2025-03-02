@@ -6,8 +6,26 @@
 	let {
 		title = 'title',
 		img = 'https://picsum.photos/seed/6/1000',
-		shader = shaderConfigWarpGrid
-	}: { title?: string; img?: string; shader?: typeof shaderConfigWarpGrid } = $props();
+		shader = shaderConfigWarpGrid,
+		client = 'Awesome Client',
+		date = 'March 2025',
+		techStack = ['Next.js', 'Three.js', 'Blender', 'TailwindCSS'],
+		highlights = [
+			'Implemented real-time 3D visualization',
+			'Optimized for mobile performance',
+			'Custom shader effects'
+		],
+		demoUrl = 'https://demo.example.com'
+	}: {
+		title?: string;
+		img?: string;
+		shader?: typeof shaderConfigWarpGrid;
+		client?: string;
+		date?: string;
+		techStack?: string[];
+		highlights?: string[];
+		demoUrl?: string;
+	} = $props();
 
 	let isHovering = $state(false);
 	const over = () => (isHovering = true);
@@ -61,9 +79,45 @@
 			{/each}
 		</div>
 	</div>
-	<div>
-		TODO: add panel with the following info: - client name - date - tools/libraries used
-		(next/blender/threejs etc) - highlights - demo button (if available)
+	<div class="mt-8 grid grid-cols-2 gap-8 px-8 pb-12 text-white">
+		<div class="space-y-6">
+			<div>
+				<h3 class="text-sm uppercase tracking-wider text-white/60">Client</h3>
+				<p class="text-xl font-medium">{client}</p>
+			</div>
+			<div>
+				<h3 class="text-sm uppercase tracking-wider text-white/60">Date</h3>
+				<p class="text-xl font-medium">{date}</p>
+			</div>
+			<div>
+				<h3 class="text-sm uppercase tracking-wider text-white/60">Tech Stack</h3>
+				<div class="mt-2 flex flex-wrap gap-2">
+					{#each techStack as tech}
+						<span class="rounded bg-white/10 px-3 py-1 text-sm backdrop-blur-sm">{tech}</span>
+					{/each}
+				</div>
+			</div>
+		</div>
+		<div class="space-y-6">
+			<div>
+				<h3 class="text-sm uppercase tracking-wider text-white/60">Highlights</h3>
+				<ul class="mt-2 list-inside list-disc space-y-2">
+					{#each highlights as highlight}
+						<li class="text-lg">{highlight}</li>
+					{/each}
+				</ul>
+			</div>
+			{#if demoUrl}
+				<a
+					href={demoUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="inline-block rounded-lg bg-white px-6 py-3 text-lg font-medium text-black transition-transform hover:scale-105"
+				>
+					View Demo →
+				</a>
+			{/if}
+		</div>
 	</div>
 {/snippet}
 
