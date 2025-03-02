@@ -1,7 +1,6 @@
 <script lang="ts">
 	import ShaderCanvas from '$lib/shader/ShaderCanvas.svelte';
 	import { shaderConfigMdr } from '$lib/shader/shaders';
-	import { shaderConfigWarpGrid } from '$lib/shader/shaders/shader-warpgrid';
 	import { PROJECTS } from './constants';
 	import Record from './Record.svelte';
 </script>
@@ -10,15 +9,19 @@
 	<ShaderCanvas shader={shaderConfigMdr} />
 </div>
 
-<p class="font-display z-0 mx-auto w-fit py-10 text-4xl text-white">previous work</p>
-<div class="flex flex-col gap-4 overflow-hidden px-2 pt-5">
+<p class="font-display z-0 mx-auto w-fit pt-10 text-4xl text-white">previous work</p>
+
+<div id="works" class="flex flex-col gap-4 overflow-x-hidden px-2 pt-10">
 	{#each PROJECTS as project}
-		<Record title={project.title} shader={project.shader} />
+		<div>
+			<Record title={project.title} shader={project.shader} />
+		</div>
 	{/each}
 </div>
 
 <style>
-	:global(body) {
+	:global(html) {
 		background: rgba(0, 0, 0, 0.92);
+		scrollbar-gutter: stable both-edges;
 	}
 </style>
