@@ -20,11 +20,8 @@
 </div>
 
 <style>
-	:global(body) {
+	:global(html) {
 		background: rgba(0, 0, 0, 0.92);
-		scrollbar-gutter: stable;
-	}
-
-	#works {
+		scrollbar-gutter: stable both-edges;
 	}
 </style>
