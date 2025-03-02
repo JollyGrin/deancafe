@@ -7,6 +7,16 @@ import {
 
 export const PROJECTS = [
 	{
+		title: 'teamplay',
+		description: 'videogame matchmaking',
+		shader: shaderConfigWaterGreen
+	},
+	{
+		title: 'runepunk',
+		description: 'videogame matchmaking',
+		shader: shaderConfigWaterGreen
+	},
+	{
 		title: 'dean.land',
 		description: 'collection of my opensourced threejs experiments',
 		shader: shaderConfigWarpGrid
@@ -25,10 +35,5 @@ export const PROJECTS = [
 		title: 'divorce rfp',
 		description: 'custom data entry for insurance handling',
 		shader: shaderConfigRainbow
-	},
-	{
-		title: 'teamplay',
-		description: 'videogame matchmaking',
-		shader: shaderConfigWaterGreen
 	}
 ];

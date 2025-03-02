@@ -16,6 +16,10 @@
 	let isOpen = $state(false);
 </script>
 
+{#snippet shelf()}
+	<img class="min-h-[400px]" src="https://picsum.photos/seed/6/1000/400" alt="banner" />
+{/snippet}
+
 <div
 	tabindex="0"
 	onkeydown={() => {}}
@@ -42,7 +46,7 @@
 </div>
 {#if isOpen}
 	<div class="container w-full text-white" transition:slide>
-		<img src="https://picsum.photos/seed/6/1000/400" alt="banner" />
+		{@render shelf()}
 	</div>
 {/if}
 
