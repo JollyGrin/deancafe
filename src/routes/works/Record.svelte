@@ -61,6 +61,10 @@
 			{/each}
 		</div>
 	</div>
+	<div>
+		TODO: add panel with the following info: - client name - date - tools/libraries used
+		(next/blender/threejs etc) - highlights - demo button (if available)
+	</div>
 {/snippet}
 
 <div
