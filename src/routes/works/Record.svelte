@@ -17,7 +17,7 @@
 </script>
 
 {#snippet shelf()}
-	<img class="min-h-[400px]" src="https://picsum.photos/seed/6/1000/400" alt="banner" />
+	<img class="min-h-[300px]" src="https://picsum.photos/seed/6/1000/400" alt="banner" />
 {/snippet}
 
 <div
@@ -58,6 +58,7 @@
 	}
 
 	.cube {
+		cursor: pointer;
 		perspective: 1200px;
 		height: 5rem;
 		width: 100%;
