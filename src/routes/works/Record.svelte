@@ -1,31 +1,10 @@
 <script lang="ts">
 	import ShaderCanvas from '$lib/shader/ShaderCanvas.svelte';
-	import { shaderConfigWarpGrid } from '$lib/shader/shaders/shader-warpgrid';
 	import { slide } from 'svelte/transition';
+	import RecordShelf from './RecordShelf.svelte';
+	import type { RecordDTO } from '$lib/types-record';
 
-	let {
-		title = 'title',
-		img = 'https://picsum.photos/seed/6/1000',
-		shader = shaderConfigWarpGrid,
-		client = 'Awesome Client',
-		date = 'March 2025',
-		techStack = ['Next.js', 'Three.js', 'Blender', 'TailwindCSS'],
-		highlights = [
-			'Implemented real-time 3D visualization',
-			'Optimized for mobile performance',
-			'Custom shader effects'
-		],
-		demoUrl = 'https://demo.example.com'
-	}: {
-		title?: string;
-		img?: string;
-		shader?: typeof shaderConfigWarpGrid;
-		client?: string;
-		date?: string;
-		techStack?: string[];
-		highlights?: string[];
-		demoUrl?: string;
-	} = $props();
+	let record: RecordDTO = $props();
 
 	let isHovering = $state(false);
 	const over = () => (isHovering = true);
@@ -41,83 +20,24 @@
 		'https://picsum.photos/seed/3/1000/400',
 		'https://picsum.photos/seed/4/1000/400'
 	];
-
-	const nextImage = () => {
-		currentImageIndex = (currentImageIndex + 1) % images.length;
-	};
-
-	const prevImage = () => {
-		currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-	};
 </script>
 
-{#snippet shelf()}
-	<div class="relative min-h-[300px] w-full">
-		<img
-			class="min-h-[300px] w-full object-cover"
-			src={images[currentImageIndex]}
-			alt="gallery image {currentImageIndex + 1}"
-		/>
-		<button
-			class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
-			onclick={prevImage}
-		>
-			←
-		</button>
-		<button
-			class="absolute top-1/2 right-4 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
-			onclick={nextImage}
-		>
-			→
-		</button>
-		<div class="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
-			{#each images as _, i}
-				<button
-					class="h-2 w-2 rounded-full {i === currentImageIndex ? 'bg-white' : 'bg-white/50'}"
-					onclick={() => (currentImageIndex = i)}
-				/>
-			{/each}
-		</div>
+{#snippet faceDisplay()}
+	<div class="grid h-full grid-cols-3 items-center justify-items-center px-4">
+		<p class="justify-self-start text-2xl font-bold">{record?.title}</p>
+		<p>Videogame matchmaking</p>
+		<p class="justify-self-end">(logo)</p>
 	</div>
-	<div class="mt-8 grid grid-cols-2 gap-8 px-8 pb-12 text-white">
-		<div class="space-y-6">
-			<div>
-				<h3 class="text-sm uppercase tracking-wider text-white/60">Client</h3>
-				<p class="text-xl font-medium">{client}</p>
-			</div>
-			<div>
-				<h3 class="text-sm uppercase tracking-wider text-white/60">Date</h3>
-				<p class="text-xl font-medium">{date}</p>
-			</div>
-			<div>
-				<h3 class="text-sm uppercase tracking-wider text-white/60">Tech Stack</h3>
-				<div class="mt-2 flex flex-wrap gap-2">
-					{#each techStack as tech}
-						<span class="rounded bg-white/10 px-3 py-1 text-sm backdrop-blur-sm">{tech}</span>
-					{/each}
-				</div>
-			</div>
-		</div>
-		<div class="space-y-6">
-			<div>
-				<h3 class="text-sm uppercase tracking-wider text-white/60">Highlights</h3>
-				<ul class="mt-2 list-inside list-disc space-y-2">
-					{#each highlights as highlight}
-						<li class="text-lg">{highlight}</li>
-					{/each}
-				</ul>
-			</div>
-			{#if demoUrl}
-				<a
-					href={demoUrl}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="inline-block rounded-lg bg-white px-6 py-3 text-lg font-medium text-black transition-transform hover:scale-105"
-				>
-					View Demo →
-				</a>
-			{/if}
-		</div>
+{/snippet}
+
+{#snippet faceTop()}
+	<div
+		class="topface"
+		style="background:url({images[
+			currentImageIndex
+		]}); background-repeat: no-repeat; background-size:cover;"
+	>
+		<ShaderCanvas shader={record.shader} />
 	</div>
 {/snippet}
 
@@ -132,24 +52,14 @@
 	onclick={() => (isOpen = !isOpen)}
 >
 	<div class="cube" class:isopen={isOpen}>
-		<div class="grid h-full grid-cols-3 items-center justify-items-center px-4">
-			<p class="justify-self-start text-2xl font-bold">{title}</p>
-			<p>Videogame matchmaking</p>
-			<p class="justify-self-end">(logo)</p>
-		</div>
-		<div
-			class="topface"
-			style="background:url({images[
-				currentImageIndex
-			]}); background-repeat: no-repeat; background-size:cover;"
-		>
-			<ShaderCanvas {shader} />
-		</div>
+		{@render faceDisplay()}
+		{@render faceTop()}
 	</div>
 </div>
+
 {#if isOpen}
 	<div class="container w-full text-white" transition:slide>
-		{@render shelf()}
+		<RecordShelf />
 	</div>
 {/if}
 

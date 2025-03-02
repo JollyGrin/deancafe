@@ -1,5 +1,4 @@
 import {
-	shaderConfigMdr,
 	shaderConfigRainbow,
 	shaderConfigWarpGrid,
 	shaderConfigWaterGreen
