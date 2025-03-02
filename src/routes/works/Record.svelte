@@ -14,10 +14,53 @@
 	const out = () => (isHovering = false);
 
 	let isOpen = $state(false);
+
+	// Gallery state
+	let currentImageIndex = $state(0);
+	const images = [
+		'https://picsum.photos/seed/1/1000/400',
+		'https://picsum.photos/seed/2/1000/400',
+		'https://picsum.photos/seed/3/1000/400',
+		'https://picsum.photos/seed/4/1000/400'
+	];
+
+	const nextImage = () => {
+		currentImageIndex = (currentImageIndex + 1) % images.length;
+	};
+
+	const prevImage = () => {
+		currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+	};
 </script>
 
 {#snippet shelf()}
-	<img class="min-h-[300px]" src="https://picsum.photos/seed/6/1000/400" alt="banner" />
+	<div class="relative min-h-[300px] w-full">
+		<img
+			class="min-h-[300px] w-full object-cover"
+			src={images[currentImageIndex]}
+			alt="gallery image {currentImageIndex + 1}"
+		/>
+		<button
+			class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
+			onclick={prevImage}
+		>
+			←
+		</button>
+		<button
+			class="absolute top-1/2 right-4 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
+			onclick={nextImage}
+		>
+			→
+		</button>
+		<div class="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
+			{#each images as _, i}
+				<button
+					class="h-2 w-2 rounded-full {i === currentImageIndex ? 'bg-white' : 'bg-white/50'}"
+					onclick={() => (currentImageIndex = i)}
+				/>
+			{/each}
+		</div>
+	</div>
 {/snippet}
 
 <div
@@ -38,7 +81,9 @@
 		</div>
 		<div
 			class="topface"
-			style="background:url({img}); background-repeat: no-repeat; background-size:cover;"
+			style="background:url({images[
+				currentImageIndex
+			]}); background-repeat: no-repeat; background-size:cover;"
 		>
 			<ShaderCanvas {shader} />
 		</div>
