@@ -13,7 +13,8 @@ export const PROJECTS: RecordDTO[] = [
 		shader: shaderConfigWaterGreen,
 		media: [
 			`${base}/teamplay/demo.mp4`,
-			'https://picsum.photos/seed/2/1000/400'
+			'https://picsum.photos/seed/2/1000/400',
+			'https://picsum.photos/seed/3/1000/400'
 		]
 	},
 	{

@@ -32,6 +32,7 @@
 	};
 
 	const handleDragStart = (e: MouseEvent | TouchEvent) => {
+		e.preventDefault();
 		isDragging = true;
 		startX = 'touches' in e ? e.touches[0].clientX : e.clientX;
 		currentX = startX;
@@ -39,11 +40,13 @@
 
 	const handleDragMove = (e: MouseEvent | TouchEvent) => {
 		if (!isDragging) return;
+		e.preventDefault();
 		currentX = 'touches' in e ? e.touches[0].clientX : e.clientX;
 	};
 
-	const handleDragEnd = () => {
+	const handleDragEnd = (e: MouseEvent | TouchEvent) => {
 		if (!isDragging) return;
+		e.preventDefault();
 		const dragDistance = currentX - startX;
 
 		if (Math.abs(dragDistance) >= dragThreshold) {
@@ -58,16 +61,21 @@
 		startX = 0;
 		currentX = 0;
 	};
+
+	const preventDrag = (e: Event) => {
+		e.preventDefault();
+	};
 </script>
 
 {#snippet image()}
 	<img
-		class="min-h-[350px] w-full object-cover select-none"
+		class="min-h-[350px] w-full object-cover select-none pointer-events-none"
 		style="transform: translateX({isDragging ? currentX - startX : 0}px); transition: {isDragging
 			? 'none'
 			: 'transform 0.3s ease'}"
 		src={images[currentImageIndex]}
 		alt="gallery image {currentImageIndex + 1}"
+		ondragstart={preventDrag}
 	/>
 {/snippet}
 
@@ -75,11 +83,12 @@
 	<video
 		muted
 		autoplay
-		class="h-[350px] w-full object-cover select-none"
+		class="h-[350px] w-full object-cover select-none pointer-events-none"
 		style="transform: translateX({isDragging ? currentX - startX : 0}px); transition: {isDragging
 			? 'none'
 			: 'transform 0.3s ease'}"
 		src={images[currentImageIndex]}
+		ondragstart={preventDrag}
 	></video>
 {/snippet}
 
@@ -95,6 +104,7 @@
 		ontouchmove={handleDragMove}
 		ontouchend={handleDragEnd}
 		ontouchcancel={handleDragEnd}
+		ondragstart={preventDrag}
 	>
 		{#if mediaUrl?.endsWith('.mp4')}
 			{@render video()}
@@ -104,12 +114,14 @@
 		<button
 			class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
 			onclick={prevImage}
+			ondragstart={preventDrag}
 		>
 			←
 		</button>
 		<button
 			class="absolute top-1/2 right-4 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
 			onclick={nextImage}
+			ondragstart={preventDrag}
 		>
 			→
 		</button>
@@ -119,6 +131,7 @@
 					aria-label="gallery image {i + 1}"
 					class="h-2 w-2 rounded-full {i === currentImageIndex ? 'bg-white' : 'bg-white/50'}"
 					onclick={() => (currentImageIndex = i)}
+					ondragstart={preventDrag}
 				></button>
 			{/each}
 		</div>
