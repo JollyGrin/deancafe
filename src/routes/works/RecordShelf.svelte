@@ -14,14 +14,14 @@
 	// Gallery state
 	let currentImageIndex = $state(0);
 	const images = $derived(record?.media ?? []);
-	// const images = [
-	// 	base + '/teamplay/demo.mp4',
-	// 	'https://picsum.photos/seed/2/1000/400',
-	// 	'https://picsum.photos/seed/3/1000/400',
-	// 	'https://picsum.photos/seed/4/1000/400'
-	// ];
 
 	console.log(record, record?.media);
+
+	// Drag state
+	let isDragging = $state(false);
+	let startX = $state(0);
+	let currentX = $state(0);
+	let dragThreshold = 100; // pixels needed to trigger next/prev
 
 	const nextImage = () => {
 		currentImageIndex = (currentImageIndex + 1) % images.length;
@@ -30,24 +30,72 @@
 	const prevImage = () => {
 		currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
 	};
+
+	const handleDragStart = (e: MouseEvent | TouchEvent) => {
+		isDragging = true;
+		startX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+		currentX = startX;
+	};
+
+	const handleDragMove = (e: MouseEvent | TouchEvent) => {
+		if (!isDragging) return;
+		currentX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+	};
+
+	const handleDragEnd = () => {
+		if (!isDragging) return;
+		const dragDistance = currentX - startX;
+
+		if (Math.abs(dragDistance) >= dragThreshold) {
+			if (dragDistance > 0) {
+				prevImage();
+			} else {
+				nextImage();
+			}
+		}
+
+		isDragging = false;
+		startX = 0;
+		currentX = 0;
+	};
 </script>
 
 {#snippet image()}
 	<img
-		class="min-h-[350px] w-full object-cover"
+		class="min-h-[350px] w-full object-cover select-none"
+		style="transform: translateX({isDragging ? currentX - startX : 0}px); transition: {isDragging
+			? 'none'
+			: 'transform 0.3s ease'}"
 		src={images[currentImageIndex]}
 		alt="gallery image {currentImageIndex + 1}"
 	/>
 {/snippet}
 
 {#snippet video()}
-	<video muted autoplay class="h-[350px] w-full object-cover" src={images[currentImageIndex]}
+	<video
+		muted
+		autoplay
+		class="h-[350px] w-full object-cover select-none"
+		style="transform: translateX({isDragging ? currentX - startX : 0}px); transition: {isDragging
+			? 'none'
+			: 'transform 0.3s ease'}"
+		src={images[currentImageIndex]}
 	></video>
 {/snippet}
 
 {#snippet media()}
 	{@const mediaUrl = images[currentImageIndex]}
-	<div class="relative min-h-[350px] w-full">
+	<div
+		class="relative min-h-[350px] w-full cursor-grab {isDragging ? 'cursor-grabbing' : ''}"
+		onmousedown={handleDragStart}
+		onmousemove={handleDragMove}
+		onmouseup={handleDragEnd}
+		onmouseleave={handleDragEnd}
+		ontouchstart={handleDragStart}
+		ontouchmove={handleDragMove}
+		ontouchend={handleDragEnd}
+		ontouchcancel={handleDragEnd}
+	>
 		{#if mediaUrl?.endsWith('.mp4')}
 			{@render video()}
 		{:else}
