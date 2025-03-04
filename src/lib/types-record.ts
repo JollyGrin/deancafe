@@ -2,6 +2,7 @@ import type { shaderConfigWarpGrid } from './shader/shaders';
 
 export type RecordDTO = {
 	title?: string;
+	description?: string;
 	img?: string;
 	shader?: typeof shaderConfigWarpGrid;
 	client?: string;
@@ -9,6 +10,5 @@ export type RecordDTO = {
 	techStack?: string[];
 	highlights?: string[];
 	demoUrl?: string;
-	galleryImages?: string[];
-	galleryVideos?: string[];
+	media?: string[];
 };

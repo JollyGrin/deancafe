@@ -1,21 +1,27 @@
 <script lang="ts">
 	import type { RecordDTO } from '$lib/types-record';
+	import { base } from '$app/paths';
 
 	let {
 		client = '',
 		date = '',
 		techStack = [],
 		highlights = [],
-		demoUrl = '/'
+		demoUrl = '/',
+		...record
 	}: RecordDTO = $props();
+
 	// Gallery state
 	let currentImageIndex = $state(0);
-	const images = [
-		'https://picsum.photos/seed/1/1000/400',
-		'https://picsum.photos/seed/2/1000/400',
-		'https://picsum.photos/seed/3/1000/400',
-		'https://picsum.photos/seed/4/1000/400'
-	];
+	const images = $derived(record?.media ?? []);
+	// const images = [
+	// 	base + '/teamplay/demo.mp4',
+	// 	'https://picsum.photos/seed/2/1000/400',
+	// 	'https://picsum.photos/seed/3/1000/400',
+	// 	'https://picsum.photos/seed/4/1000/400'
+	// ];
+
+	console.log(record, record?.media);
 
 	const nextImage = () => {
 		currentImageIndex = (currentImageIndex + 1) % images.length;
@@ -26,34 +32,50 @@
 	};
 </script>
 
-<div class="relative min-h-[300px] w-full">
+{#snippet image()}
 	<img
-		class="min-h-[300px] w-full object-cover"
+		class="min-h-[350px] w-full object-cover"
 		src={images[currentImageIndex]}
 		alt="gallery image {currentImageIndex + 1}"
 	/>
-	<button
-		class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
-		onclick={prevImage}
-	>
-		←
-	</button>
-	<button
-		class="absolute top-1/2 right-4 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
-		onclick={nextImage}
-	>
-		→
-	</button>
-	<div class="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
-		{#each images as _, i}
-			<button
-				aria-label="gallery image {i + 1}"
-				class="h-2 w-2 rounded-full {i === currentImageIndex ? 'bg-white' : 'bg-white/50'}"
-				onclick={() => (currentImageIndex = i)}
-			></button>
-		{/each}
+{/snippet}
+
+{#snippet video()}
+	<video muted autoplay class="h-[350px] w-full object-cover" src={images[currentImageIndex]}
+	></video>
+{/snippet}
+
+{#if !!images[currentImageIndex]}
+	<div class="relative min-h-[350px] w-full">
+		{#if images[currentImageIndex]?.endsWith('.mp4')}
+			{@render video()}
+		{:else}
+			{@render image()}
+		{/if}
+		<button
+			class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
+			onclick={prevImage}
+		>
+			←
+		</button>
+		<button
+			class="absolute top-1/2 right-4 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
+			onclick={nextImage}
+		>
+			→
+		</button>
+		<div class="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
+			{#each images as _, i}
+				<button
+					aria-label="gallery image {i + 1}"
+					class="h-2 w-2 rounded-full {i === currentImageIndex ? 'bg-white' : 'bg-white/50'}"
+					onclick={() => (currentImageIndex = i)}
+				></button>
+			{/each}
+		</div>
 	</div>
-</div>
+{/if}
+
 <div class="mt-8 grid grid-cols-2 gap-8 px-8 pb-12 text-white">
 	<div class="space-y-6">
 		<div>

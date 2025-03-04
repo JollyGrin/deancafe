@@ -59,7 +59,7 @@
 
 {#if isOpen}
 	<div class="container w-full text-white" transition:slide>
-		<RecordShelf />
+		<RecordShelf {...record} />
 	</div>
 {/if}
 

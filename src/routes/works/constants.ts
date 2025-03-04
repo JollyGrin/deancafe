@@ -3,12 +3,18 @@ import {
 	shaderConfigWarpGrid,
 	shaderConfigWaterGreen
 } from '$lib/shader/shaders';
+import { base } from '$app/paths';
+import type { RecordDTO } from '$lib/types-record';
 
-export const PROJECTS = [
+export const PROJECTS: RecordDTO[] = [
 	{
 		title: 'teamplay',
 		description: 'videogame matchmaking',
-		shader: shaderConfigWaterGreen
+		shader: shaderConfigWaterGreen,
+		media: [
+			`${base}/teamplay/demo.mp4`,
+			'https://picsum.photos/seed/2/1000/400'
+		]
 	},
 	{
 		title: 'runepunk',

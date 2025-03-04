@@ -14,7 +14,7 @@
 <div id="works" class="flex flex-col gap-4 overflow-x-hidden px-2 pt-10">
 	{#each PROJECTS as project}
 		<div>
-			<Record title={project.title} shader={project.shader} />
+			<Record {...project} />
 		</div>
 	{/each}
 </div>
