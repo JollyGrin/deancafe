@@ -45,9 +45,10 @@
 	></video>
 {/snippet}
 
-{#if !!images[currentImageIndex]}
+{#snippet media()}
+	{@const mediaUrl = images[currentImageIndex]}
 	<div class="relative min-h-[350px] w-full">
-		{#if images[currentImageIndex]?.endsWith('.mp4')}
+		{#if mediaUrl?.endsWith('.mp4')}
 			{@render video()}
 		{:else}
 			{@render image()}
@@ -74,6 +75,10 @@
 			{/each}
 		</div>
 	</div>
+{/snippet}
+
+{#if !!images[currentImageIndex]}
+	{@render media()}
 {/if}
 
 <div class="mt-8 grid grid-cols-2 gap-8 px-8 pb-12 text-white">
