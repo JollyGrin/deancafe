@@ -11,6 +11,7 @@ export const PROJECTS: RecordDTO[] = [
 		title: 'teamplay',
 		description: 'videogame matchmaking',
 		logoUrl: `${base}/teamplay/logo.png`,
+		client: 'SpacemanGaming',
 		shader: shaderConfigWaterGreen,
 		media: [`${base}/teamplay/demo.mp4`]
 	},
@@ -18,6 +19,7 @@ export const PROJECTS: RecordDTO[] = [
 		title: 'runepunk',
 		description: 'pvp',
 		logoUrl: `${base}/runepunk/logo.png`,
+		client: 'SpacemanGaming',
 		demoUrl: `https://jollygrin.github.io/demo-runepunk/`,
 		shader: shaderConfigWaterGreen,
 		media: [
@@ -28,7 +30,8 @@ export const PROJECTS: RecordDTO[] = [
 	},
 	{
 		title: 'dean.land',
-		description: 'collection of my opensourced threejs experiments',
+		description: 'collection of opensourced threejs experiments',
+		demoUrl: `https://dean.land/`,
 		shader: shaderConfigWarpGrid,
 		media: [
 			`${base}/deanland/html.webm`,

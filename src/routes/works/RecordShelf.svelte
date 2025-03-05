@@ -88,6 +88,8 @@
 {#snippet media()}
 	{@const mediaUrl = images[currentImageIndex]}
 	<div
+		tabindex="0"
+		role="button"
 		class="relative min-h-[350px] w-full cursor-grab {isDragging ? 'cursor-grabbing' : ''}"
 		onmousedown={handleDragStart}
 		onmousemove={handleDragMove}
@@ -137,10 +139,12 @@
 
 <div class="mt-8 grid grid-cols-2 gap-8 px-8 pb-12 text-white">
 	<div class="space-y-6">
-		<div>
-			<h3 class="text-sm tracking-wider text-white/60 uppercase">Client</h3>
-			<p class="text-xl font-medium">{client}</p>
-		</div>
+		{#if client}
+			<div>
+				<h3 class="text-sm tracking-wider text-white/60 uppercase">Client</h3>
+				<p class="text-xl font-medium">{client}</p>
+			</div>
+		{/if}
 		<div>
 			<h3 class="text-sm tracking-wider text-white/60 uppercase">Date</h3>
 			<p class="text-xl font-medium">{date}</p>

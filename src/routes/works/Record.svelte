@@ -11,15 +11,6 @@
 	const out = () => (isHovering = false);
 
 	let isOpen = $state(false);
-
-	// Gallery state
-	let currentImageIndex = $state(0);
-	const images = [
-		'https://picsum.photos/seed/1/1000/400',
-		'https://picsum.photos/seed/2/1000/400',
-		'https://picsum.photos/seed/3/1000/400',
-		'https://picsum.photos/seed/4/1000/400'
-	];
 </script>
 
 {#snippet faceDisplay()}
