@@ -17,7 +17,7 @@ export const PROJECTS: RecordDTO[] = [
 	},
 	{
 		title: 'runepunk',
-		description: 'pvp',
+		description: 'runescape inspired dueling',
 		logoUrl: `${base}/runepunk/logo.png`,
 		client: 'SpacemanGaming',
 		demoUrl: `https://jollygrin.github.io/demo-runepunk/`,
@@ -30,20 +30,23 @@ export const PROJECTS: RecordDTO[] = [
 	},
 	{
 		title: 'dean.land',
-		description: 'collection of opensourced threejs experiments',
+		description: 'collection of 3d experiments',
 		demoUrl: `https://dean.land/`,
 		shader: shaderConfigWarpGrid,
 		media: [
 			`${base}/deanland/html.webm`,
+			`${base}/deanland/gallery.webm`,
 			`${base}/deanland/decal.mp4`,
-			`${base}/deanland/globe.webm`,
-			`${base}/deanland/dragdrop.webm`
+			`${base}/deanland/globe.webm`
 		]
 	},
 	{
 		blur: true,
 		title: 'ruler',
-		description: 'custom data entry for insurance handling',
+		client: 'Projective Group',
+		description: 'insurance claim handling',
+		logoUrl: `${base}/ruler/logo.svg`,
+		demoUrl: `https://ruler.nl/`,
 		shader: shaderConfigRainbow,
 		media: [
 			`${base}/ruler/demo.mp4`,
@@ -56,7 +59,10 @@ export const PROJECTS: RecordDTO[] = [
 	{
 		blur: true,
 		title: 'mijn wo',
-		description: 'custom data entry for insurance handling',
+		client: 'Hyen',
+		description: 'manage & migrate pensions',
+		logoUrl: `${base}/mwo/logo.svg`,
+		demoUrl: `https://www.mijnwaardeoverdracht.nl/en`,
 		shader: shaderConfigRainbow,
 		media: [
 			`${base}/mwo/demo.mp4`,
@@ -68,7 +74,8 @@ export const PROJECTS: RecordDTO[] = [
 	{
 		blur: true,
 		title: 'divorce rfp',
-		description: 'custom data entry for insurance handling',
+		client: 'Hyfen',
+		description: 'divide pension during divorce',
 		shader: shaderConfigRainbow,
 		media: [`${base}/rfp/demo.mp4`]
 	}

@@ -145,37 +145,31 @@
 				<p class="text-xl font-medium">{client}</p>
 			</div>
 		{/if}
-		<div>
-			<h3 class="text-sm tracking-wider text-white/60 uppercase">Date</h3>
-			<p class="text-xl font-medium">{date}</p>
-		</div>
-		<div>
-			<h3 class="text-sm tracking-wider text-white/60 uppercase">Tech Stack</h3>
-			<div class="mt-2 flex flex-wrap gap-2">
-				{#each techStack as tech}
-					<span class="rounded bg-white/10 px-3 py-1 text-sm backdrop-blur-sm">{tech}</span>
-				{/each}
+		{#if date}
+			<div>
+				<h3 class="text-sm tracking-wider text-white/60 uppercase">Date</h3>
+				<p class="text-xl font-medium">{date}</p>
 			</div>
-		</div>
-	</div>
-	<div class="space-y-6">
-		<div>
-			<h3 class="text-sm tracking-wider text-white/60 uppercase">Highlights</h3>
-			<ul class="mt-2 list-inside list-disc space-y-2">
-				{#each highlights as highlight}
-					<li class="text-lg">{highlight}</li>
-				{/each}
-			</ul>
-		</div>
-		{#if record?.demoUrl}
-			<a
-				href={record?.demoUrl}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="inline-block rounded-lg bg-white px-6 py-3 text-lg font-medium text-black transition-transform hover:scale-105"
-			>
-				View Demo →
-			</a>
+		{/if}
+		{#if techStack.length > 0}
+			<div>
+				<h3 class="text-sm tracking-wider text-white/60 uppercase">Tech Stack</h3>
+				<div class="mt-2 flex flex-wrap gap-2">
+					{#each techStack as tech}
+						<span class="rounded bg-white/10 px-3 py-1 text-sm backdrop-blur-sm">{tech}</span>
+					{/each}
+				</div>
+			</div>
 		{/if}
 	</div>
+	{#if record?.demoUrl}
+		<a
+			href={record?.demoUrl}
+			target="_blank"
+			rel="noopener noreferrer"
+			class="w-full rounded-lg bg-white px-6 py-3 text-end text-lg font-medium text-black transition-transform hover:scale-105"
+		>
+			View →
+		</a>
+	{/if}
 </div>
