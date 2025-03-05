@@ -2,14 +2,7 @@
 	import type { RecordDTO } from '$lib/types-record';
 	import { base } from '$app/paths';
 
-	let {
-		client = '',
-		date = '',
-		techStack = [],
-		highlights = [],
-		demoUrl = '/',
-		...record
-	}: RecordDTO = $props();
+	let { client = '', date = '', techStack = [], highlights = [], ...record }: RecordDTO = $props();
 
 	// Gallery state
 	let currentImageIndex = $state(0);
@@ -69,7 +62,7 @@
 
 {#snippet image()}
 	<img
-		class="min-h-[350px] w-full object-cover select-none pointer-events-none"
+		class="pointer-events-none min-h-[350px] w-full object-cover select-none"
 		style="transform: translateX({isDragging ? currentX - startX : 0}px); transition: {isDragging
 			? 'none'
 			: 'transform 0.3s ease'}"
@@ -83,7 +76,7 @@
 	<video
 		muted
 		autoplay
-		class="h-[350px] w-full object-cover select-none pointer-events-none"
+		class="pointer-events-none h-[350px] w-full object-cover select-none"
 		style="transform: translateX({isDragging ? currentX - startX : 0}px); transition: {isDragging
 			? 'none'
 			: 'transform 0.3s ease'}"
@@ -170,9 +163,9 @@
 				{/each}
 			</ul>
 		</div>
-		{#if demoUrl}
+		{#if record?.demoUrl}
 			<a
-				href={demoUrl}
+				href={record?.demoUrl}
 				target="_blank"
 				rel="noopener noreferrer"
 				class="inline-block rounded-lg bg-white px-6 py-3 text-lg font-medium text-black transition-transform hover:scale-105"

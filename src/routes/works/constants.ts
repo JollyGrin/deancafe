@@ -10,6 +10,7 @@ export const PROJECTS: RecordDTO[] = [
 	{
 		title: 'teamplay',
 		description: 'videogame matchmaking',
+		logoUrl: `${base}/teamplay/logo.png`,
 		shader: shaderConfigWaterGreen,
 		media: [
 			`${base}/teamplay/demo.mp4`,
@@ -19,7 +20,8 @@ export const PROJECTS: RecordDTO[] = [
 	},
 	{
 		title: 'runepunk',
-		description: 'videogame matchmaking',
+		description: 'pvp',
+		logoUrl: `${base}/runepunk/logo.png`,
 		shader: shaderConfigWaterGreen
 	},
 	{
