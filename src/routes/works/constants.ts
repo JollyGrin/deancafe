@@ -1,4 +1,6 @@
 import {
+	shaderConfigMatrix,
+	shaderConfigOrganicRainbow,
 	shaderConfigRainbow,
 	shaderConfigWarpGrid,
 	shaderConfigWaterGreen
@@ -13,7 +15,7 @@ export const PROJECTS: RecordDTO[] = [
 		logoUrl: `${base}/waterhouse/logo.svg`,
 		demoUrl: `https://waterhousestudios.nl/`,
 		client: 'Waterhouse Studios',
-		shader: shaderConfigWaterGreen,
+		shader: shaderConfigOrganicRainbow,
 		media: [
 			`${base}/waterhouse/1.png`,
 			`${base}/waterhouse/2.png`,
@@ -25,7 +27,7 @@ export const PROJECTS: RecordDTO[] = [
 		description: 'videogame matchmaking',
 		logoUrl: `${base}/teamplay/logo.png`,
 		client: 'SpacemanGaming',
-		shader: shaderConfigWaterGreen,
+		shader: shaderConfigMatrix,
 		media: [`${base}/teamplay/demo.mp4`]
 	},
 	{
