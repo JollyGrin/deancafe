@@ -12,4 +12,5 @@ export type RecordDTO = {
 	demoUrl?: string;
 	logoUrl?: string;
 	media?: string[];
+	blur?: boolean;
 };

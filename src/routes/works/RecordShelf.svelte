@@ -1,14 +1,14 @@
 <script lang="ts">
 	import type { RecordDTO } from '$lib/types-record';
-	import { base } from '$app/paths';
+	import { page } from '$app/state';
 
+	const showMore = page.url.search === '?more';
 	let { client = '', date = '', techStack = [], highlights = [], ...record }: RecordDTO = $props();
+	const isRevealingMedia = $derived(showMore || record?.blur !== true);
 
 	// Gallery state
 	let currentImageIndex = $state(0);
 	const images = $derived(record?.media ?? []);
-
-	console.log(record, record?.media);
 
 	// Drag state
 	let isDragging = $state(false);
@@ -99,7 +99,7 @@
 		ontouchcancel={handleDragEnd}
 		ondragstart={preventDrag}
 	>
-		{#if mediaUrl?.endsWith('.mp4')}
+		{#if mediaUrl?.endsWith('.mp4') || mediaUrl?.endsWith('.webm')}
 			{@render video()}
 		{:else}
 			{@render image()}
@@ -131,7 +131,7 @@
 	</div>
 {/snippet}
 
-{#if !!images[currentImageIndex]}
+{#if !!images[currentImageIndex] && isRevealingMedia}
 	{@render media()}
 {/if}
 

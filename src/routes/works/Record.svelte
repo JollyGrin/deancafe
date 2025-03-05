@@ -33,12 +33,7 @@
 {/snippet}
 
 {#snippet faceTop()}
-	<div
-		class="topface"
-		style="background:url({images[
-			currentImageIndex
-		]}); background-repeat: no-repeat; background-size:cover;"
-	>
+	<div class="topface">
 		<ShaderCanvas shader={record.shader} />
 	</div>
 {/snippet}
