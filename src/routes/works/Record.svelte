@@ -25,8 +25,10 @@
 {#snippet faceDisplay()}
 	<div class="grid h-full grid-cols-3 items-center justify-items-center px-4">
 		<p class="justify-self-start text-2xl font-bold">{record?.title}</p>
-		<p>Videogame matchmaking</p>
-		<p class="justify-self-end">(logo)</p>
+		<p class="font-display text-center">{record?.description}</p>
+		{#if record?.logoUrl}
+			<img src={record.logoUrl} alt="{record?.title} logo" class="w-12 justify-self-end" />
+		{/if}
 	</div>
 {/snippet}
 

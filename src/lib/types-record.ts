@@ -10,5 +10,6 @@ export type RecordDTO = {
 	techStack?: string[];
 	highlights?: string[];
 	demoUrl?: string;
+	logoUrl?: string;
 	media?: string[];
 };
