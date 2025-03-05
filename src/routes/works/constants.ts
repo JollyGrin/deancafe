@@ -8,6 +8,19 @@ import type { RecordDTO } from '$lib/types-record';
 
 export const PROJECTS: RecordDTO[] = [
 	{
+		title: 'waterhouse',
+		description: 'amsterdam music studios',
+		logoUrl: `${base}/waterhouse/logo.svg`,
+		demoUrl: `https://waterhousestudios.nl/`,
+		client: 'Waterhouse Studios',
+		shader: shaderConfigWaterGreen,
+		media: [
+			`${base}/waterhouse/1.png`,
+			`${base}/waterhouse/2.png`,
+			`${base}/waterhouse/3.png`
+		]
+	},
+	{
 		title: 'teamplay',
 		description: 'videogame matchmaking',
 		logoUrl: `${base}/teamplay/logo.png`,
