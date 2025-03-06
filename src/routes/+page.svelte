@@ -2,10 +2,25 @@
 	import CanvasCup from '$lib/Canvas/Cup/CanvasCup.svelte';
 	import IconHistory from '$lib/icon/IconHistory.svelte';
 	import IconLogo from '$lib/icon/IconLogo.svelte';
-	import IconQuote from '$lib/icon/IconQuote.svelte';
-	import Cup from '$lib/Models/Cup.svelte';
+
+	import ShaderCanvas from '$lib/shader/ShaderCanvas.svelte';
+	import {
+		shaderConfigMdr,
+		shaderConfigOrganicRainbow,
+		shaderConfigRainbow,
+		shaderConfigWarpGrid
+	} from '$lib/shader/shaders';
 	import SvgMockup from '$lib/svg/SVGMockup.svelte';
-	import { Canvas } from '@threlte/core';
+
+	const shaders = [
+		shaderConfigOrganicRainbow,
+		shaderConfigRainbow,
+		shaderConfigMdr,
+		shaderConfigWarpGrid
+	];
+
+	const randomIndex = Math.round(Math.random() * shaders.length);
+	const randomShader = shaders[randomIndex];
 </script>
 
 <div class="font-readex text-brand-primary flex min-h-screen flex-col justify-between bg-white">
@@ -51,7 +66,14 @@
 					<SvgMockup />
 				</div>
 			</div>
-			{@render card('websites')}
+			<div
+				class="bg-brand-light relative min-h-[5vh] overflow-clip rounded-4xl p-8 saturate-50 transition-all hover:translate-x-[0.5rem] hover:translate-y-[-0.5rem] hover:shadow-[-2px_2px_4px_rgba(0,0,0,0.1)] hover:saturate-110 active:saturate-110 md:min-h-[30vh]"
+			>
+				<h2 class="bg-brand-light/50 relative z-50 w-fit rounded-full p-2">websites</h2>
+				<div class="absolute top-0 left-0 z-0 h-full w-full">
+					<ShaderCanvas shader={randomShader} />
+				</div>
+			</div>
 			<div
 				class="bg-brand-light relative min-h-[5vh] overflow-clip rounded-4xl p-8 transition-all hover:translate-x-[0.5rem] hover:translate-y-[-0.5rem] hover:shadow-[-2px_2px_6px_rgba(0,0,0,0.08)] md:min-h-[30vh]"
 			>
