@@ -107,14 +107,14 @@
 			{@render image()}
 		{/if}
 		<button
-			class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
+			class="absolute top-1/2 left-4 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white select-none hover:bg-black/70"
 			onclick={prevImage}
 			ondragstart={preventDrag}
 		>
 			←
 		</button>
 		<button
-			class="absolute top-1/2 right-4 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
+			class="absolute top-1/2 right-4 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white select-none hover:bg-black/70"
 			onclick={nextImage}
 			ondragstart={preventDrag}
 		>
@@ -137,26 +137,28 @@
 	{@render media()}
 {/if}
 
-<div class="mt-8 grid grid-cols-2 gap-8 px-8 pb-12 text-white">
+<div class="mt-8 grid grid-cols-2 gap-8 px-8 pb-12">
 	<div class="space-y-6">
 		{#if client}
 			<div>
-				<h3 class="text-sm tracking-wider text-white/60 uppercase">Client</h3>
+				<h3 class="text-brand-primary/60 text-sm tracking-wider uppercase">Client</h3>
 				<p class="text-xl font-medium">{client}</p>
 			</div>
 		{/if}
 		{#if date}
 			<div>
-				<h3 class="text-sm tracking-wider text-white/60 uppercase">Date</h3>
+				<h3 class="text-brand-primary/60 text-sm tracking-wider uppercase">Date</h3>
 				<p class="text-xl font-medium">{date}</p>
 			</div>
 		{/if}
 		{#if techStack.length > 0}
 			<div>
-				<h3 class="text-sm tracking-wider text-white/60 uppercase">Tech Stack</h3>
+				<h3 class="text-brand-primary/60 text-sm tracking-wider uppercase">Tech Stack</h3>
 				<div class="mt-2 flex flex-wrap gap-2">
 					{#each techStack as tech}
-						<span class="rounded bg-white/10 px-3 py-1 text-sm backdrop-blur-sm">{tech}</span>
+						<span class="bg-brand-primary/10 rounded px-3 py-1 text-sm backdrop-blur-sm"
+							>{tech}</span
+						>
 					{/each}
 				</div>
 			</div>
@@ -167,7 +169,7 @@
 			href={record?.demoUrl}
 			target="_blank"
 			rel="noopener noreferrer"
-			class="w-full rounded-lg bg-white px-6 py-3 text-end text-lg font-medium text-black transition-transform hover:scale-105"
+			class="font-potta bg-brand-primary text-brand-light w-fit justify-self-end rounded-lg px-6 py-3 text-end text-lg font-medium transition-transform hover:scale-105"
 		>
 			View →
 		</a>

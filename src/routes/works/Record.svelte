@@ -14,9 +14,13 @@
 </script>
 
 {#snippet faceDisplay()}
-	<div class="grid h-full grid-cols-3 items-center justify-items-center px-4">
-		<p class="font-readex justify-self-start text-2xl font-bold">{record?.title}</p>
-		<p class="font-readex text-center">{record?.description}</p>
+	<div
+		class="grid h-full grid-cols-[2fr_4fr_1fr] items-center justify-items-center px-4 md:grid-cols-3"
+	>
+		<p class="font-readex justify-self-start text-lg font-bold md:text-2xl">{record?.title}</p>
+		<p class="font-readex md:text-md justify-self-center text-center text-xs">
+			{record?.description}
+		</p>
 		{#if record?.logoUrl}
 			<img src={record.logoUrl} alt="{record?.title} logo" class="w-12 justify-self-end" />
 		{/if}
@@ -46,7 +50,7 @@
 </div>
 
 {#if isOpen}
-	<div class="container w-full text-white" transition:slide>
+	<div class="text-brand-primary container w-full" transition:slide>
 		<RecordShelf {...record} />
 	</div>
 {/if}
