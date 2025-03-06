@@ -1,81 +1,99 @@
 <script lang="ts">
-	import { Canvas } from '@threlte/core';
-	import Scene from './Scene.svelte';
+	import CanvasCup from '$lib/Canvas/Cup/CanvasCup.svelte';
+	import IconHistory from '$lib/icon/IconHistory.svelte';
+	import IconLogo from '$lib/icon/IconLogo.svelte';
+
+	import ShaderCanvas from '$lib/shader/ShaderCanvas.svelte';
+	import {
+		shaderConfigMdr,
+		shaderConfigOrganicRainbow,
+		shaderConfigRainbow,
+		shaderConfigWarpGrid
+	} from '$lib/shader/shaders';
+	import SvgMockup from '$lib/svg/SVGMockup.svelte';
+
+	const shaders = [
+		shaderConfigOrganicRainbow,
+		shaderConfigRainbow,
+		shaderConfigMdr,
+		shaderConfigWarpGrid
+	];
+
+	const randomIndex = Math.round(Math.random() * shaders.length);
+	const randomShader = shaders[randomIndex];
 </script>
 
-{#snippet fadeLeft()}
-	<div
-		class="from-brand-back via-brand-back/80 to-brand-back/0 absolute left-0 hidden h-full w-10 bg-gradient-to-r xl:block"
-	></div>
-{/snippet}
-{#snippet fadeRight()}
-	<div
-		class="from-brand-back via-brand-back/80 to-brand-back/0 absolute right-0 hidden h-full w-20 bg-gradient-to-l md:block"
-	></div>
-{/snippet}
+<div class="font-readex text-brand-primary flex min-h-screen flex-col justify-between bg-white">
+	<header class="flex items-center justify-between p-4">
+		<a href="/" class="flex items-center gap-2">
+			<IconLogo w={50} />
+		</a>
+		<nav class="flex gap-4 font-bold">
+			<a href="/works" class="bg-brand-light flex items-center gap-2 rounded-xl px-3 py-2">
+				<IconHistory w={22} />
+				<span> past orders</span>
+			</a>
+			<!-- <a href="/quote" class="bg-brand-light flex items-center gap-2 rounded-xl px-3 py-2"> -->
+			<!-- 	<IconQuote /> -->
+			<!-- 	<span>quote</span> -->
+			<!-- </a> -->
+		</nav>
+	</header>
 
-{#snippet fadeBottom()}
-	<div
-		class="from-brand-back via-brand-back/80 absolute bottom-0 hidden h-10 w-full bg-gradient-to-t to-white/0 md:block"
-	></div>
-{/snippet}
-
-{#snippet content()}
-	<div
-		class="bg-back/10 absolute z-20 flex h-full w-full flex-col justify-between font-[Ovo] text-white"
-	>
-		<div class="px-4 py-2"></div>
-		<div class="flex items-center justify-between px-4 py-2">
-			<p class="text-2xl">dean.cafe</p>
-			<div class="flex gap-2 md:mx-20">
-				<p>web</p>
-				<p>■</p>
-				<p>design</p>
-				<p>■</p>
-				<p>3d</p>
-			</div>
-		</div>
+	<div class="grid place-items-center">
+		<h1 class="font-potta mb-4 text-6xl font-bold">dean.cafe</h1>
+		<p class="mb-16 text-xl text-[#C16A08]">I'll make you a website</p>
 	</div>
-{/snippet}
 
-{#snippet cup()}
-	<Canvas>
-		<Scene />
-	</Canvas>
-{/snippet}
-
-<div class="bg-brand-back h-screen">
-	<div class="mx-auto grid h-full grid-cols-1 md:grid-cols-[3fr_2fr]">
-		<div id="bg-img" class="relative">
-			<div class="absolute z-10 h-[400px] w-full md:hidden">
-				{@render cup()}
-			</div>
-			{@render content()}
-			{@render fadeRight()}
-			{@render fadeLeft()}
-			<!-- {@render fadeBottom()} -->
+	{#snippet card(text: string)}
+		<div
+			class="bg-brand-light min-h-[5vh] rounded-4xl p-8 transition-all hover:translate-x-[0.5rem] hover:translate-y-[-0.5rem] hover:shadow-[-2px_2px_4px_rgba(0,0,0,0.1)] md:min-h-[30vh]"
+		>
+			<h2>{text}</h2>
 		</div>
-		<div class="relative hidden place-content-center text-white md:grid">
-			<p class="font-display mb-2 text-xl">Transform your digital footprint.</p>
-			<div class="absolute top-20 h-[250px]">
-				{@render cup()}
+	{/snippet}
+
+	<div class="flex flex-col items-center justify-center gap-10">
+		<div class="grid w-full max-w-4xl grid-cols-1 gap-8 md:grid-cols-3">
+			<!-- CARDS -->
+			<div
+				class="group/mockup bg-brand-light relative min-h-[5vh] overflow-clip rounded-4xl p-8 transition-all hover:translate-x-[0.5rem] hover:translate-y-[-0.5rem] hover:shadow-[-2px_2px_4px_rgba(0,0,0,0.1)] md:min-h-[30vh]"
+			>
+				<h2>mockups</h2>
+				<div
+					class="absolute top-[10px] left-32 scale-90 opacity-80 transition-all group-hover/mockup:translate-y-[-15px] md:top-[60px] md:left-4"
+				>
+					<SvgMockup />
+				</div>
 			</div>
-			<!-- <button -->
-			<!-- 	class="w-fit rounded-full border-[1px] border-gray-800/50 bg-gradient-to-t from-gray-900 to-gray-700/50 px-2 font-sans text-sm" -->
-			<!-- > -->
-			<!-- 	Start Now -->
-			<!-- </button> -->
+			<div
+				class="bg-brand-light relative min-h-[5vh] overflow-clip rounded-4xl p-8 saturate-50 transition-all hover:translate-x-[0.5rem] hover:translate-y-[-0.5rem] hover:shadow-[-2px_2px_4px_rgba(0,0,0,0.1)] hover:saturate-110 active:saturate-110 md:min-h-[30vh]"
+			>
+				<h2 class="bg-brand-light/50 relative z-50 w-fit rounded-full p-2">websites</h2>
+				<div class="absolute top-0 left-0 z-0 h-full w-full">
+					<ShaderCanvas shader={randomShader} />
+				</div>
+			</div>
+			<div
+				class="bg-brand-light relative min-h-[5vh] overflow-clip rounded-4xl p-8 transition-all hover:translate-x-[0.5rem] hover:translate-y-[-0.5rem] hover:shadow-[-2px_2px_6px_rgba(0,0,0,0.08)] md:min-h-[30vh]"
+			>
+				<h2>3d</h2>
+				<div
+					class="absolute top-[-30px] left-[100px] min-h-10 min-w-10 scale-70 opacity-80 md:top-10 md:left-4 md:scale-90"
+				>
+					<CanvasCup />
+				</div>
+			</div>
+			<!-- CARDS END -->
+		</div>
+		<div class="bg-brand-primary text-brand-light grid h-20 w-full place-items-center">
+			<div class="flex flex-col items-center">
+				<div class="flex items-center gap-2">
+					<span class="h-4 w-4 animate-pulse rounded-full bg-amber-500"> </span>
+					<span> Currently engaged in client work </span>
+				</div>
+				<span class="text-xs opacity-30"> Reach out to schedule future appointment </span>
+			</div>
 		</div>
 	</div>
 </div>
-
-<style>
-	#bg-img {
-		background-image: url('/tree2.png');
-		background-size: cover;
-		background-repeat: no-repeat;
-		background-position: 100% 100%;
-		box-shadow:
-			/* 50px 50px 113px #000 inset, */ -50px -50px 110px #000 inset;
-	}
-</style>
