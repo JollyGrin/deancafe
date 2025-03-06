@@ -73,18 +73,21 @@
 		transform-origin: bottom;
 		z-index: 100;
 		opacity: 0.6;
+		border: solid 1px rgba(0, 0, 0, 0);
 	}
 
 	.cube:hover {
 		opacity: 1;
 		rotate: x -40deg;
 		box-shadow: inset 0 -10px 5px rgba(0, 0, 0, 0.05);
+		border: solid 0.5px rgba(0, 0, 0, 0.05);
 	}
 
 	.cube.isopen {
 		opacity: 1;
 		rotate: x -40deg;
 		box-shadow: inset 0 -10px 5px rgba(0, 0, 0, 0.05);
+		border: solid 0.5px rgba(0, 0, 0, 0.05);
 	}
 
 	.topface {
