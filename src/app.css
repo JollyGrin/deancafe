@@ -3,5 +3,10 @@
 @theme {
 	--font-display: 'Ovo', 'serif';
 	--font-sans: 'Radio Canada Big', 'sans-serif';
+	--font-readex: 'Readex Pro', 'sans-serif';
+	--font-potta: 'Potta One', 'system-ui';
+
 	--color-brand-back: #060e10;
+	--color-brand-primary: #be730a;
+	--color-brand-light: #fff7ec;
 }

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import IconLogo from '$lib/icon/IconLogo.svelte';
 	import ShaderCanvas from '$lib/shader/ShaderCanvas.svelte';
 	import {
 		shaderConfigMatrix,
@@ -19,11 +20,13 @@
 	];
 </script>
 
-<div class="fixed z-[-1] h-screen w-screen opacity-[.05]">
-	<ShaderCanvas shader={shaderConfigMdr} />
+<div class="text-brand-primary z-0 mx-auto grid w-full grid-cols-3 items-center px-6 pt-10">
+	<a href="/" class="w-fit opacity-30 transition-all hover:scale-110 hover:opacity-100">
+		<IconLogo w={40} />
+	</a>
+	<p class="font-readex w-fit justify-self-center text-2xl">some previous work</p>
+	<div></div>
 </div>
-
-<p class="font-display z-0 mx-auto w-fit pt-10 text-4xl text-white">previous work</p>
 
 <div id="works" class="flex flex-col gap-4 overflow-x-hidden px-2 pt-10">
 	{#each PROJECTS as project, i}
@@ -33,10 +36,3 @@
 		</div>
 	{/each}
 </div>
-
-<style>
-	:global(html) {
-		background: rgba(0, 0, 0, 0.92);
-		scrollbar-gutter: stable both-edges;
-	}
-</style>
