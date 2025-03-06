@@ -20,11 +20,13 @@
 	];
 </script>
 
-<div class="text-brand-primary z-0 mx-auto grid w-full grid-cols-3 items-center px-6 pt-10">
-	<a href="/" class="w-fit opacity-30 transition-all hover:scale-110 hover:opacity-100">
-		<IconLogo w={40} />
+<div
+	class="text-brand-primary z-0 mx-auto grid w-full grid-cols-[1fr_5fr_1fr] items-center px-6 pt-10"
+>
+	<a href="/" class="w-fit opacity-20 transition-all hover:scale-110 hover:opacity-100">
+		<IconLogo w={35} />
 	</a>
-	<p class="font-readex w-fit justify-self-center text-2xl">some previous work</p>
+	<p class="font-readex w-fit justify-self-center text-center text-2xl">some works</p>
 	<div></div>
 </div>
 

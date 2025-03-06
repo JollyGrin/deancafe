@@ -69,7 +69,7 @@
 			<div
 				class="bg-brand-light relative min-h-[5vh] overflow-clip rounded-4xl p-8 saturate-50 transition-all hover:translate-x-[0.5rem] hover:translate-y-[-0.5rem] hover:shadow-[-2px_2px_4px_rgba(0,0,0,0.1)] hover:saturate-110 active:saturate-110 md:min-h-[30vh]"
 			>
-				<h2 class="bg-brand-light/50 relative z-50 w-fit rounded-full p-2">websites</h2>
+				<h2 class="bg-brand-light/80 relative z-50 w-fit rounded-full p-2">websites</h2>
 				<div class="absolute top-0 left-0 z-0 h-full w-full">
 					<ShaderCanvas shader={randomShader} />
 				</div>

@@ -59,6 +59,7 @@
 	.container {
 		perspective: 1200px;
 		max-width: 700px;
+		padding: 0 0.25rem;
 		margin: 0 auto;
 	}
 
